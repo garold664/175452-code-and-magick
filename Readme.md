@@ -1,7 +1,7 @@
 # Личный проект «Код и Магия» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Нияз Мухаметзянов](https://up.htmlacademy.ru/javascript/7/user/175452).
-* Наставник: `Неизвестно`.
+* Наставник: [Антон Калин](https://htmlacademy.ru/profile/id38651).
 
 ---
 
