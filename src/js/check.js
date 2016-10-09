@@ -1,3 +1,4 @@
+'use strict';
 function getMessage(a, b) {
   if (typeof a === 'boolean') {
     if (a) {
@@ -29,3 +30,4 @@ function getMessage(a, b) {
 
   return 'Переданы некорректные данные';
 }
+getMessage();
