@@ -429,9 +429,9 @@ window.Game = (function() {
       ctx.textBaseline = 'hanging';
       ctx.fillStyle = '#000000';
 
-      function writeMessage(msg) {
-        for (var i = 0, l = msg.length; i < l; i++) {
-          ctx.fillText(msg[i], messageX + textIndent, messageY + (i + 1) * textIndent);
+      function writeMessage(message) {
+        for (var i = 0, l = message.length; i < l; i++) {
+          ctx.fillText(message[i], messageX + textIndent, messageY + (i + 1) * textIndent);
         }
       }
 
