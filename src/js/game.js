@@ -408,18 +408,49 @@ window.Game = (function() {
      * Отрисовка экрана паузы.
      */
     _drawPauseScreen: function() {
+      var messageX = 200,
+        messageY = 50,
+        messageWidth = 320,
+        messageHeight = 115,
+        shadowOffset = 10,
+        textIndent = 15,
+        text,
+        ctx = this.ctx;
+
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+      ctx.shadowOffsetX = shadowOffset;
+      ctx.shadowOffsetY = shadowOffset;
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(messageX, messageY, messageWidth, messageHeight);
+      ctx.shadowColor = 'transparent';
+      ctx.font = '16px PT Mono';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'hanging';
+      ctx.fillStyle = '#000000';
+
+      function writeMessage(message) {
+        for (var i = 0, l = message.length; i < l; i++) {
+          ctx.fillText(message[i], messageX + textIndent, messageY + (i + 1) * textIndent);
+        }
+      }
+
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          text = ['Да ты просто молодец!', 'Ты выйграл!'];
+          writeMessage(text);
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          text = ['Ну вот.. Ты проиграл.', 'Не расстраивайся!'];
+          writeMessage(text);
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          text = ['Игра на паузе', 'Можешь сходить попить чаю'];
+          writeMessage(text);
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          text = ['Добро пожаловать на игру', 'Нажми на пробел, чтобы начать', 'Используй стрелки, чтобы', 'двигаться и прыгать,', 'shift, чтобы пускать файерболы'];
+          writeMessage(text);
           break;
       }
     },
