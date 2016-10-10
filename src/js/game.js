@@ -438,7 +438,7 @@ window.Game = (function() {
 
         letterWidth = ctx.measureText('m').width;
         letterWidth = Math.ceil(letterWidth);
-        lettersNumber = Math.floor((messageWidth - textIndent)/letterWidth);
+        lettersNumber = Math.floor((messageWidth - textIndent) / letterWidth);
         message = message.trim();
 
         while (message.length > lettersNumber) {
