@@ -417,18 +417,6 @@ window.Game = (function() {
         text,
         ctx = this.ctx;
 
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
-      ctx.shadowOffsetX = shadowOffset;
-      ctx.shadowOffsetY = shadowOffset;
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(messageX, messageY, messageWidth, messageHeight);
-      ctx.shadowColor = 'transparent';
-      ctx.font = '16px \'PT Mono\'';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'hanging';
-      ctx.fillStyle = '#000000';
-
       function writeMessage(message) {
         var messageLines = [],
           letterWidth,
@@ -455,9 +443,23 @@ window.Game = (function() {
         }
         messageLines.push(message);
 
+        messageHeight = messageLines.length * (textIndent + 10);
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+        ctx.shadowOffsetX = shadowOffset;
+        ctx.shadowOffsetY = shadowOffset;
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(messageX, messageY, messageWidth, messageHeight);
+        ctx.shadowColor = 'transparent';
+        ctx.font = '16px \'PT Mono\'';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'hanging';
+        ctx.fillStyle = '#000000';
+
         for (var i = 0, l = messageLines.length; i < l; i++) {
           ctx.fillText(messageLines[i], messageX + textIndent, messageY + (i + 1) * textIndent);
         }
+
       }
 
       switch (this.state.currentStatus) {
