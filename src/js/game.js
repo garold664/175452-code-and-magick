@@ -411,7 +411,7 @@ window.Game = (function() {
       var messageX = 200,
         messageY = 50,
         messageWidth = 320,
-        messageHeight = 115,
+        messageHeight = 120,
         shadowOffset = 10,
         textIndent = 15,
         text,
@@ -424,32 +424,57 @@ window.Game = (function() {
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(messageX, messageY, messageWidth, messageHeight);
       ctx.shadowColor = 'transparent';
-      ctx.font = '16px PT Mono';
+      ctx.font = '16px \'PT Mono\'';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'hanging';
       ctx.fillStyle = '#000000';
 
       function writeMessage(message) {
-        for (var i = 0, l = message.length; i < l; i++) {
-          ctx.fillText(message[i], messageX + textIndent, messageY + (i + 1) * textIndent);
+        var messageLines = [],
+          letterWidth,
+          lettersNumber,
+          position = 0,
+          previousposition = 0;
+
+        letterWidth = ctx.measureText('m').width;
+        letterWidth = Math.ceil(letterWidth);
+        lettersNumber = Math.floor((messageWidth - textIndent) / letterWidth);
+        message = message.trim();
+
+        while (message.length > lettersNumber) {
+          position = 0;
+          while ((position < lettersNumber) && (position > -1)) {
+            previousposition = position;
+            position = message.indexOf(' ', position + 1);
+          }
+
+          position = (!(previousposition === 0)) ? previousposition : position;
+          position = (position === -1) ? (message.length + 1) : position;
+          messageLines.push(message.slice(0, position));
+          message = message.slice(position).trim();
+        }
+        messageLines.push(message);
+
+        for (var i = 0, l = messageLines.length; i < l; i++) {
+          ctx.fillText(messageLines[i], messageX + textIndent, messageY + (i + 1) * textIndent);
         }
       }
 
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          text = ['Да ты просто молодец!', 'Ты выйграл!'];
+          text = 'Да ты просто молодец! Ты выйграл! Нажми на пробел, чтобы начать заново';
           writeMessage(text);
           break;
         case Verdict.FAIL:
-          text = ['Ну вот.. Ты проиграл.', 'Не расстраивайся!'];
+          text = 'Ну вот.. Ты проиграл. Не расстраивайся! Нажми на пробел, чтобы начать заново';
           writeMessage(text);
           break;
         case Verdict.PAUSE:
-          text = ['Игра на паузе', 'Можешь сходить попить чаю'];
+          text = 'Игра на паузе. Можешь сходить попить чаю';
           writeMessage(text);
           break;
         case Verdict.INTRO:
-          text = ['Добро пожаловать на игру', 'Нажми на пробел, чтобы начать', 'Используй стрелки, чтобы', 'двигаться и прыгать,', 'shift, чтобы пускать файерболы'];
+          text = 'Добро пожаловать на игру. Нажми на пробел, чтобы начать. Используй стрелки, чтобы двигаться и прыгать , shift, чтобы пускать файерболы';
           writeMessage(text);
           break;
       }
