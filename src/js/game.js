@@ -416,6 +416,7 @@ window.Game = (function() {
         textIndent = 15,
         text,
         ctx = this.ctx;
+        ctx.font = '16px PT Mono';
 
       function writeMessage(message) {
         var messageLines = [],
@@ -451,7 +452,6 @@ window.Game = (function() {
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(messageX, messageY, messageWidth, messageHeight);
         ctx.shadowColor = 'transparent';
-        ctx.font = '16px \'PT Mono\'';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'hanging';
         ctx.fillStyle = '#000000';
