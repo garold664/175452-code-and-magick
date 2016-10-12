@@ -416,7 +416,6 @@ window.Game = (function() {
         textIndent = 15,
         text,
         ctx = this.ctx;
-        ctx.font = '16px PT Mono';
 
       function writeMessage(message) {
         var messageLines = [],
@@ -425,6 +424,7 @@ window.Game = (function() {
           position = 0,
           previousposition = 0;
 
+        ctx.font = '16px PT Mono';
         letterWidth = ctx.measureText('m').width;
         letterWidth = Math.ceil(letterWidth);
         lettersNumber = Math.floor((messageWidth - textIndent) / letterWidth);
@@ -444,7 +444,7 @@ window.Game = (function() {
         }
         messageLines.push(message);
 
-        messageHeight = messageLines.length * (textIndent + 10);
+        messageHeight = messageLines.length * (textIndent) + textIndent * 2;
         ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
         ctx.shadowOffsetX = shadowOffset;
         ctx.shadowOffsetY = shadowOffset;
