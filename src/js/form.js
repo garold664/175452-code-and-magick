@@ -3,17 +3,17 @@
 window.form = (function() {
   var formContainer = document.querySelector('.overlay-container');
   var reviewForm = document.querySelector('.review-form');
-  var reviewSubmit = document.querySelector('.review-submit');
-  var formCloseButton = document.querySelector('.review-form-close');
-  var reviewGroupMark = document.querySelector('.review-form-group-mark');
-  var reviewFields = document.querySelector('.review-fields');
-  var reviewName = document.querySelector('#review-name');
-  var reviewLabelName = document.querySelector('.review-fields-name');
-  var reviewText = document.querySelector('#review-text');
-  var reviewLabelText = document.querySelector('.review-fields-text');
-  var reviewMark3 = document.querySelector('#review-mark-3');
-  var reviewMark4 = document.querySelector('#review-mark-4');
-  var reviewMark5 = document.querySelector('#review-mark-5');
+  var reviewSubmit = reviewForm.querySelector('.review-submit');
+  var formCloseButton = reviewForm.querySelector('.review-form-close');
+  var reviewGroupMark = reviewForm.querySelector('.review-form-group-mark');
+  var reviewFields = reviewForm.querySelector('.review-fields');
+  var reviewName = reviewForm.querySelector('#review-name');
+  var reviewLabelName = reviewForm.querySelector('.review-fields-name');
+  var reviewText = reviewForm.querySelector('#review-text');
+  var reviewLabelText = reviewForm.querySelector('.review-fields-text');
+  var reviewMark3 = reviewForm.querySelector('#review-mark-3');
+  var reviewMark4 = reviewForm.querySelector('#review-mark-4');
+  var reviewMark5 = reviewForm.querySelector('#review-mark-5');
 
   var form = {
     onClose: null,
