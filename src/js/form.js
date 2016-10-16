@@ -15,6 +15,9 @@ window.form = (function() {
   var reviewMark4 = reviewForm.querySelector('#review-mark-4');
   var reviewMark5 = reviewForm.querySelector('#review-mark-5');
 
+  reviewSubmit.disabled = true;
+  reviewLabelText.style.display = 'none';
+
   var form = {
     onClose: null,
 
@@ -36,7 +39,6 @@ window.form = (function() {
   };
 
 
-  reviewSubmit.disabled = true;
   reviewForm.onchange = function() {
     if (this.checkValidity()) {
       reviewFields.style.display = 'none';
@@ -55,7 +57,6 @@ window.form = (function() {
     }
   };
 
-  reviewLabelText.style.display = 'none';
   reviewText.onchange = function() {
     if (this.validity.valid) {
       reviewLabelText.style.display = 'none';
@@ -65,7 +66,7 @@ window.form = (function() {
   };
 
   reviewGroupMark.onchange = function() {
-    if (!(reviewMark3.checked) && !(reviewMark4.checked) && !(reviewMark5.checked)) {
+    if (!(reviewMark3.checked || reviewMark4.checked || reviewMark5.checked)) {
       reviewText.required = true;
       reviewFields.style.display = 'inline-block';
       reviewLabelText.style.display = 'inline-block';
