@@ -38,42 +38,60 @@ window.form = (function() {
     }
   };
 
+function validateForm(evt) {
+  switch (evt.target.id) {
+    case 'review-form':
+      if (reviewForm.checkValidity()) {
+        reviewFields.style.display = 'none';
+        reviewSubmit.disabled = false;
+      } else {
+        reviewFields.style.display = 'inline-block';
+        reviewSubmit.disabled = true;
+      }
+      break;
 
-  reviewForm.onchange = function() {
-    if (this.checkValidity()) {
-      reviewFields.style.display = 'none';
-      reviewSubmit.disabled = false;
-    } else {
-      reviewFields.style.display = 'inline-block';
-      reviewSubmit.disabled = true;
-    }
-  };
+    case 'review-name' :
+      if (reviewName.validity.valid) {
+        reviewLabelName.style.display = 'none';
+      } else {
+        reviewLabelName.style.display = 'inline-block';
+      }
+      break;
 
-  reviewName.onchange = function() {
-    if (this.validity.valid) {
-      reviewLabelName.style.display = 'none';
-    } else {
-      reviewLabelName.style.display = 'inline-block';
-    }
-  };
+    case 'review-text' :
+      if (reviewText.validity.valid) {
+        reviewLabelText.style.display = 'none';
+      } else {
+        reviewLabelText.style.display = 'inline-block';
+      }
+      break;
 
-  reviewText.onchange = function() {
-    if (this.validity.valid) {
-      reviewLabelText.style.display = 'none';
-    } else {
-      reviewLabelText.style.display = 'inline-block';
-    }
-  };
+    case 'review-mark-1' :
+    case 'review-mark-2' :
+    case 'review-mark-3' :
+    case 'review-mark-4' :
+    case 'review-mark-5' :
+      if (!(reviewMark3.checked || reviewMark4.checked || reviewMark5.checked)) {
+        reviewText.required = true;
+        reviewFields.style.display = 'inline-block';
+        reviewLabelText.style.display = 'inline-block';
+      } else {
+        reviewText.required = false;
+        reviewLabelText.style.display = 'none';
+      }
+      break;
+  }
 
-  reviewGroupMark.onchange = function() {
-    if (!(reviewMark3.checked || reviewMark4.checked || reviewMark5.checked)) {
-      reviewText.required = true;
-      reviewFields.style.display = 'inline-block';
-      reviewLabelText.style.display = 'inline-block';
-    } else {
-      reviewText.required = false;
-    }
-  };
+  if (reviewForm.checkValidity()) {
+    reviewFields.style.display = 'none';
+    reviewSubmit.disabled = false;
+  } else {
+    reviewFields.style.display = 'inline-block';
+    reviewSubmit.disabled = true;
+  }
+}
+
+reviewForm.addEventListener('change', validateForm, false);
 
   formCloseButton.onclick = function(evt) {
     evt.preventDefault();
