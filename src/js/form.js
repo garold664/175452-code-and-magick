@@ -19,6 +19,7 @@ window.form = (function() {
 
   formCloseButton.addEventListener('click', closeForm, false);
   reviewForm.addEventListener('change', validateForm, false);
+  reviewForm.addEventListener('submit', saveCookies, false);
 
 
   var form = {
@@ -72,6 +73,33 @@ window.form = (function() {
   function closeForm(evt) {
     evt.preventDefault();
     form.close();
+  }
+
+  function saveCookies(evt) {
+    evt.preventDefault();
+
+    var today = new Date(),
+      birthdayOfGH = new Date(),
+      diff,
+      name = reviewName.value,
+      reviewMarkChecked = reviewForm.querySelector('[type=\'radio\']:checked').id;
+
+    console.log(reviewMarkChecked);
+
+    today.setMonth(2);
+    today.setFullYear(2017);
+
+    birthdayOfGH.setMonth(11);
+    birthdayOfGH.setDate(9);
+
+
+    if (today.getTime() < birthdayOfGH.getTime()) {
+      diff = birthdayOfGH.getTime() - today.getTime();
+      diff = Math.floor(diff / (1000 * 60 * 60 * 24));
+    }
+
+    Cookies.set('name', name, { expires: diff });
+    Cookies.set('review-mark', reviewMarkChecked, { expires: diff });
   }
 
   return form;
