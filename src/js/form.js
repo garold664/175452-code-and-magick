@@ -39,17 +39,8 @@ window.form = (function() {
   };
 
 function validateForm(evt) {
-  switch (evt.target.id) {
-    case 'review-form':
-      if (reviewForm.checkValidity()) {
-        reviewFields.style.display = 'none';
-        reviewSubmit.disabled = false;
-      } else {
-        reviewFields.style.display = 'inline-block';
-        reviewSubmit.disabled = true;
-      }
-      break;
 
+  /*switch (evt.target.id) {
     case 'review-name' :
       if (reviewName.validity.valid) {
         reviewLabelName.style.display = 'none';
@@ -80,6 +71,12 @@ function validateForm(evt) {
         reviewLabelText.style.display = 'none';
       }
       break;
+  }*/
+
+  if (!(reviewMark3.checked || reviewMark4.checked || reviewMark5.checked)) {
+    reviewText.required = true;
+  } else {
+    reviewText.required = false;
   }
 
   if (reviewForm.checkValidity()) {
@@ -88,6 +85,18 @@ function validateForm(evt) {
   } else {
     reviewFields.style.display = 'inline-block';
     reviewSubmit.disabled = true;
+
+    if (reviewName.validity.valid) {
+      reviewLabelName.style.display = 'none';
+    } else {
+      reviewLabelName.style.display = 'inline-block';
+    }
+
+    if (reviewText.validity.valid) {
+      reviewLabelText.style.display = 'none';
+    } else {
+      reviewLabelText.style.display = 'inline-block';
+    }
   }
 }
 
