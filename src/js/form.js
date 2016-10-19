@@ -1,18 +1,18 @@
 'use strict';
 
 window.form = (function() {
-  var formContainer = document.querySelector('.overlay-container'),
-    reviewForm = document.querySelector('.review-form'),
-    reviewSubmit = reviewForm.querySelector('.review-submit'),
-    formCloseButton = reviewForm.querySelector('.review-form-close'),
-    reviewFields = reviewForm.querySelector('.review-fields'),
-    reviewName = reviewForm.querySelector('#review-name'),
-    reviewLabelName = reviewForm.querySelector('.review-fields-name'),
-    reviewText = reviewForm.querySelector('#review-text'),
-    reviewLabelText = reviewForm.querySelector('.review-fields-text'),
-    reviewMark3 = reviewForm.querySelector('#review-mark-3'),
-    reviewMark4 = reviewForm.querySelector('#review-mark-4'),
-    reviewMark5 = reviewForm.querySelector('#review-mark-5');
+  var formContainer = document.querySelector('.overlay-container');
+  var reviewForm = document.querySelector('.review-form');
+  var reviewSubmit = reviewForm.querySelector('.review-submit');
+  var formCloseButton = reviewForm.querySelector('.review-form-close');
+  var reviewFields = reviewForm.querySelector('.review-fields');
+  var reviewName = reviewForm.querySelector('#review-name');
+  var reviewLabelName = reviewForm.querySelector('.review-fields-name');
+  var reviewText = reviewForm.querySelector('#review-text');
+  var reviewLabelText = reviewForm.querySelector('.review-fields-text');
+  var reviewMark3 = reviewForm.querySelector('#review-mark-3');
+  var reviewMark4 = reviewForm.querySelector('#review-mark-4');
+  var reviewMark5 = reviewForm.querySelector('#review-mark-5');
 
   reviewSubmit.disabled = true;
   reviewLabelText.style.display = 'none';
@@ -20,8 +20,8 @@ window.form = (function() {
   formCloseButton.addEventListener('click', closeForm, false);
   reviewForm.addEventListener('change', validateForm, false);
   reviewForm.addEventListener('input', validateForm, false);
-  reviewForm.addEventListener('submit', saveCookies, false);
-  window.addEventListener('load', setFromCookies, false);
+  reviewForm.addEventListener('submit', setCookiesFromForm, false);
+  window.addEventListener('load', fillFormFromCookies, false);
 
   var form = {
     onClose: null,
@@ -44,11 +44,16 @@ window.form = (function() {
   };
 
 
-  function setFromCookies() {
-    reviewName.value = window.Cookies.get('name') || '';
+  function fillFormFromCookies() {
+    var reviewMarkFromCookies = window.Cookies.get('review-mark');
+    var reviewNameFromCookies = window.Cookies.get('review-name');
+    var reviewMarkToCheck;
 
-    if (window.Cookies.get('review-mark')) {
-      document.getElementById(window.Cookies.get('review-mark')).checked = true;
+    reviewName.value = reviewNameFromCookies || '';
+
+    if (reviewMarkFromCookies) {
+      reviewMarkToCheck = document.getElementById(reviewMarkFromCookies);
+      reviewMarkToCheck.checked = true;
     }
   }
 
@@ -85,23 +90,24 @@ window.form = (function() {
     form.close();
   }
 
-  function saveCookies() {
-    var today = new Date(),
-      birthdayOfGH = new Date(),
-      diff,
-      name = reviewName.value,
-      reviewMarkChecked = reviewForm.querySelector('[type=\'radio\']:checked').id;
+  function setCookiesFromForm() {
+    var today = new Date();
+    var birthdayOfGraceHopper = new Date();
+    var diff;
+    var name = reviewName.value;
+    var reviewMarkChecked = reviewForm.element['radio'].value;
+    var millisecondsInDay = (1000 * 60 * 60 * 24);
 
-    birthdayOfGH.setMonth(11);
-    birthdayOfGH.setDate(9);
+    birthdayOfGraceHopper.setMonth(11);
+    birthdayOfGraceHopper.setDate(9);
 
-    if (today.getTime() < birthdayOfGH.getTime()) {
-      birthdayOfGH.setFullYear(today.getFullYear() - 1);
+    if (today.getTime() < birthdayOfGraceHopper.getTime()) {
+      birthdayOfGraceHopper.setFullYear(today.getFullYear() - 1);
     }
-    diff = today.getTime() - birthdayOfGH.getTime();
-    diff = Math.floor(diff / (1000 * 60 * 60 * 24));
+    diff = today.getTime() - birthdayOfGraceHopper.getTime();
+    diff = Math.floor(diff / millisecondsInDay);
 
-    window.Cookies.set('name', name, { expires: diff });
+    window.Cookies.set('review-name', name, { expires: diff });
     window.Cookies.set('review-mark', reviewMarkChecked, { expires: diff });
   }
 
