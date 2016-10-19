@@ -1,26 +1,27 @@
 'use strict';
 
 window.form = (function() {
-  var formContainer = document.querySelector('.overlay-container');
-  var reviewForm = document.querySelector('.review-form');
-  var reviewSubmit = reviewForm.querySelector('.review-submit');
-  var formCloseButton = reviewForm.querySelector('.review-form-close');
-  var reviewFields = reviewForm.querySelector('.review-fields');
-  var reviewName = reviewForm.querySelector('#review-name');
-  var reviewLabelName = reviewForm.querySelector('.review-fields-name');
-  var reviewText = reviewForm.querySelector('#review-text');
-  var reviewLabelText = reviewForm.querySelector('.review-fields-text');
-  var reviewMark3 = reviewForm.querySelector('#review-mark-3');
-  var reviewMark4 = reviewForm.querySelector('#review-mark-4');
-  var reviewMark5 = reviewForm.querySelector('#review-mark-5');
+  var formContainer = document.querySelector('.overlay-container'),
+    reviewForm = document.querySelector('.review-form'),
+    reviewSubmit = reviewForm.querySelector('.review-submit'),
+    formCloseButton = reviewForm.querySelector('.review-form-close'),
+    reviewFields = reviewForm.querySelector('.review-fields'),
+    reviewName = reviewForm.querySelector('#review-name'),
+    reviewLabelName = reviewForm.querySelector('.review-fields-name'),
+    reviewText = reviewForm.querySelector('#review-text'),
+    reviewLabelText = reviewForm.querySelector('.review-fields-text'),
+    reviewMark3 = reviewForm.querySelector('#review-mark-3'),
+    reviewMark4 = reviewForm.querySelector('#review-mark-4'),
+    reviewMark5 = reviewForm.querySelector('#review-mark-5');
 
   reviewSubmit.disabled = true;
   reviewLabelText.style.display = 'none';
 
   formCloseButton.addEventListener('click', closeForm, false);
   reviewForm.addEventListener('change', validateForm, false);
+  reviewForm.addEventListener('input', validateForm, false);
   reviewForm.addEventListener('submit', saveCookies, false);
-
+  window.addEventListener('load', setFromCookies, false);
 
   var form = {
     onClose: null,
@@ -41,6 +42,15 @@ window.form = (function() {
       }
     }
   };
+
+
+  function setFromCookies() {
+    reviewName.value = window.Cookies.get('name') || '';
+
+    if (window.Cookies.get('review-mark')) {
+      document.getElementById(window.Cookies.get('review-mark')).checked = true;
+    }
+  }
 
   function validateForm() {
     if (!(reviewMark3.checked || reviewMark4.checked || reviewMark5.checked)) {
@@ -75,32 +85,26 @@ window.form = (function() {
     form.close();
   }
 
-  function saveCookies(evt) {
-    evt.preventDefault();
-
+  function saveCookies() {
     var today = new Date(),
       birthdayOfGH = new Date(),
       diff,
       name = reviewName.value,
       reviewMarkChecked = reviewForm.querySelector('[type=\'radio\']:checked').id;
 
-    console.log(reviewMarkChecked);
-
-    today.setMonth(2);
-    today.setFullYear(2017);
-
     birthdayOfGH.setMonth(11);
     birthdayOfGH.setDate(9);
 
-
     if (today.getTime() < birthdayOfGH.getTime()) {
-      diff = birthdayOfGH.getTime() - today.getTime();
-      diff = Math.floor(diff / (1000 * 60 * 60 * 24));
+      birthdayOfGH.setFullYear(today.getFullYear() - 1);
     }
+    diff = today.getTime() - birthdayOfGH.getTime();
+    diff = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-    Cookies.set('name', name, { expires: diff });
-    Cookies.set('review-mark', reviewMarkChecked, { expires: diff });
+    window.Cookies.set('name', name, { expires: diff });
+    window.Cookies.set('review-mark', reviewMarkChecked, { expires: diff });
   }
 
   return form;
 })();
+
