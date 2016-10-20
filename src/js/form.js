@@ -98,8 +98,6 @@ window.form = (function() {
     var reviewMarkChecked = reviewForm.elements['review-mark'].value;
     var millisecondsInDay = (1000 * 60 * 60 * 24);
 
-    console.log(reviewMarkChecked);
-
     birthdayOfGraceHopper.setMonth(11);
     birthdayOfGraceHopper.setDate(9);
 
@@ -109,7 +107,6 @@ window.form = (function() {
     diff = today.getTime() - birthdayOfGraceHopper.getTime();
     diff = Math.floor(diff / millisecondsInDay);
 
-    console.log(diff);
     window.Cookies.set('review-name', name, { expires: diff });
     window.Cookies.set('review-mark', reviewMarkChecked, { expires: diff });
   }
