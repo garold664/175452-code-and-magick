@@ -1,6 +1,6 @@
 'use strict';
 
-window.reviews = (function() {
+(function() {
   var reviewsJSON = [{
     'author': {
       'name': 'Иванов Иван',
@@ -141,43 +141,38 @@ window.reviews = (function() {
   var reviewsTemplate = document.querySelector('#review-template');
   var reviewsList = document.querySelector('.reviews-list');
   var reviewsFilter = document.querySelector('.reviews-filter');
+  var reviews = reviewsJSON;
 
   reviewsFilter.classList.add('invisible');
 
-  window.addReviews = function() {
-    var reviews = reviewsJSON;
+  reviews.forEach(function() {
+    reviewsList.appendChild(reviewsTemplate.content.children[0].cloneNode(true));
+  });
 
-    reviews.forEach(function() {
-      reviewsList.appendChild(reviewsTemplate.content.children[0].cloneNode(true));
-    });
+  var review = reviewsList.querySelectorAll('.review');
+  var reviewAuthor = reviewsList.querySelectorAll('.review-author');
+  var reviewRating = reviewsList.querySelectorAll('.review-rating');
+  var reviewText = reviewsList.querySelectorAll('.review-text');
 
-    var review = reviewsList.querySelectorAll('.review');
-    var reviewAuthor = reviewsList.querySelectorAll('.review-author');
-    var reviewRating = reviewsList.querySelectorAll('.review-rating');
-    var reviewText = reviewsList.querySelectorAll('.review-text');
+  reviews.forEach(function(reviewItem, i) {
+    reviewAuthor[i].title = reviewItem.author.name;
 
-    reviews.forEach(function(reviewItem, i) {
-      reviewAuthor[i].title = reviewItem.author.name;
+    reviewAuthor[i].onload = function() {
+      this.width = 124;
+      this.height = 124;
+    };
+    reviewAuthor[i].onerror = function() {
+      this.parentNode.classList.add('review-load-failure');
+    };
 
-      reviewAuthor[i].onload = function() {
-        this.width = 124;
-        this.height = 124;
-      };
-      reviewAuthor[i].onerror = function() {
-        this.parentNode.classList.add('review-load-failure');
-      };
+    review[i].removeChild(reviewAuthor[i]);
+    reviewAuthor[i] = new Image();
+    reviewAuthor[i].src = reviews[i].author.picture;
+    review[i].insertBefore(reviewAuthor[i], reviewRating[i]);
+    reviewRating[i].innerHTML = reviewItem.rating;
+    reviewText[i].innerHTML = reviewItem.description;
+  });
 
-      review[i].removeChild(reviewAuthor[i]);
-      reviewAuthor[i] = new Image();
-      reviewAuthor[i].src = reviews[i].author.picture;
-      review[i].insertBefore(reviewAuthor[i], reviewRating[i]);
-      reviewRating[i].innerHTML = reviewItem.rating;
-      reviewText[i].innerHTML = reviewItem.description;
-    });
-
-    reviewsFilter.classList.remove('invisible');
-  };
-
-
+  reviewsFilter.classList.remove('invisible');
 })();
 
