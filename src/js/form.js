@@ -52,7 +52,7 @@ window.form = (function() {
     reviewName.value = reviewNameFromCookies || '';
 
     if (reviewMarkFromCookies) {
-      reviewMarkToCheck = document.getElementById(reviewMarkFromCookies);
+      reviewMarkToCheck = document.getElementById('review-mark-' + reviewMarkFromCookies);
       reviewMarkToCheck.checked = true;
     }
   }
