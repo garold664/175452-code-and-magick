@@ -138,36 +138,46 @@ window.reviews = (function() {
     'rating': 5,
     'description': 'Игра очень интересная. Нравится возможность выбирать между героями, а самое крутое, что есть альтернативные концовки в игре. Она точно стоит своих денег.'
   }];
-  var reviews = reviewsJSON;
   var reviewsTemplate = document.querySelector('#review-template');
   var reviewsList = document.querySelector('.reviews-list');
+  var reviewsFilter = document.querySelector('.reviews-filter');
 
-  reviews.forEach(function() {
-    reviewsList.appendChild(reviewsTemplate.content.children[0].cloneNode(true));
-  });
+  reviewsFilter.classList.add('invisible');
 
-  var review = reviewsList.querySelectorAll('.review');
-  var reviewAuthor = reviewsList.querySelectorAll('.review-author');
-  var reviewRating = reviewsList.querySelectorAll('.review-rating');
-  var reviewText = reviewsList.querySelectorAll('.review-text');
+  window.addReviews = function() {
+    var reviews = reviewsJSON;
 
-  reviews.forEach(function(reviewItem, i) {
-    reviewAuthor[i].title = reviewItem.author.name;
+    reviews.forEach(function() {
+      reviewsList.appendChild(reviewsTemplate.content.children[0].cloneNode(true));
+    });
 
-    reviewAuthor[i].onload = function() {
-      this.width = 124;
-      this.height = 124;
-    };
-    reviewAuthor[i].onerror = function() {
-      this.parentNode.classList.add('review-load-failure');
-    };
+    var review = reviewsList.querySelectorAll('.review');
+    var reviewAuthor = reviewsList.querySelectorAll('.review-author');
+    var reviewRating = reviewsList.querySelectorAll('.review-rating');
+    var reviewText = reviewsList.querySelectorAll('.review-text');
 
-    review[i].removeChild(reviewAuthor[i]);
-    reviewAuthor[i] = new Image();
-    reviewAuthor[i].src = reviews[i].author.picture;
-    review[i].insertBefore(reviewAuthor[i], reviewRating[i]);
-    reviewRating[i].innerHTML = reviewItem.rating;
-    reviewText[i].innerHTML = reviewItem.description;
-  });
+    reviews.forEach(function(reviewItem, i) {
+      reviewAuthor[i].title = reviewItem.author.name;
+
+      reviewAuthor[i].onload = function() {
+        this.width = 124;
+        this.height = 124;
+      };
+      reviewAuthor[i].onerror = function() {
+        this.parentNode.classList.add('review-load-failure');
+      };
+
+      review[i].removeChild(reviewAuthor[i]);
+      reviewAuthor[i] = new Image();
+      reviewAuthor[i].src = reviews[i].author.picture;
+      review[i].insertBefore(reviewAuthor[i], reviewRating[i]);
+      reviewRating[i].innerHTML = reviewItem.rating;
+      reviewText[i].innerHTML = reviewItem.description;
+    });
+
+    reviewsFilter.classList.remove('invisible');
+  };
+
+
 })();
 

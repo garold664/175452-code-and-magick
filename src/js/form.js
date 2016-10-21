@@ -23,6 +23,8 @@ window.form = (function() {
   reviewForm.addEventListener('submit', setCookiesFromForm, false);
   window.addEventListener('load', fillFormFromCookies, false);
 
+  window.addReviews();
+
   var form = {
     onClose: null,
 
