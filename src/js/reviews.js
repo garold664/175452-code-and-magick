@@ -165,14 +165,15 @@
     image.src = reviewItem.author.picture;
 
     reviewAuthor.title = reviewItem.author.name;
-    reviewRating.innerHTML = reviewItem.rating;
-    reviewText.innerHTML = reviewItem.description;
+    reviewRating.textContent = reviewItem.rating;
+    reviewText.textContent = reviewItem.description;
 
     return reviewElement;
   }
 
   reviews.forEach(function(reviewItem) {
-    reviewsList.appendChild(getReviewElement(reviewItem));
+    var reviewElement = getReviewElement(reviewItem);
+    reviewsList.appendChild(reviewElement);
   });
 
   reviewsFilter.classList.remove('invisible');
