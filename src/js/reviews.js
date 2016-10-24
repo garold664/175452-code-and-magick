@@ -138,28 +138,28 @@
     'rating': 5,
     'description': 'Игра очень интересная. Нравится возможность выбирать между героями, а самое крутое, что есть альтернативные концовки в игре. Она точно стоит своих денег.'
   }];
-  var reviewsTemplate = document.querySelector('#review-template');
+  var template = document.querySelector('#review-template');
+  var templateContainer = 'content' in template ? template.content : template;
   var reviewsList = document.querySelector('.reviews-list');
   var reviewsFilter = document.querySelector('.reviews-filter');
   var reviews = reviewsJSON;
 
   reviewsFilter.classList.add('invisible');
 
-  reviews.forEach(function(reviewItem) {
-    var review = reviewsTemplate.content.children[0].cloneNode(true);
-    var reviewAuthor = review.querySelector('.review-author');
-    var reviewRating = review.querySelector('.review-rating');
-    var reviewText = review.querySelector('.review-text');
+  function getReviewElement(reviewItem) {
+    var reviewElement = templateContainer.children[0].cloneNode(true);
+    var reviewAuthor = reviewElement.querySelector('.review-author');
+    var reviewRating = reviewElement.querySelector('.review-rating');
+    var reviewText = reviewElement.querySelector('.review-text');
     var image = new Image();
 
-    // review.removeChild(reviewAuthor);
     image.onload = function() {
       reviewAuthor.width = 124;
       reviewAuthor.height = 124;
       reviewAuthor.src = image.src;
     };
     image.onerror = function() {
-      review.classList.add('review-load-failure');
+      reviewElement.classList.add('review-load-failure');
     };
 
     image.src = reviewItem.author.picture;
@@ -168,8 +168,11 @@
     reviewRating.innerHTML = reviewItem.rating;
     reviewText.innerHTML = reviewItem.description;
 
-    reviewsList.appendChild(review);
+    return reviewElement;
+  }
 
+  reviews.forEach(function(reviewItem) {
+    reviewsList.appendChild(getReviewElement(reviewItem));
   });
 
   reviewsFilter.classList.remove('invisible');
