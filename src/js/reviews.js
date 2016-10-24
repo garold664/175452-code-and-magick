@@ -148,7 +148,14 @@
 
   reviewsFilter.classList.add('invisible');
 
-  function retrieveReviewElement(reviewItem) {
+  reviews.forEach(function(review) {
+    var reviewElement = compileReview(review);
+    reviewsList.appendChild(reviewElement);
+  });
+
+  reviewsFilter.classList.remove('invisible');
+
+  function compileReview(review) {
     var reviewElement = templateReviewElement.cloneNode(true);
     var reviewAuthor = reviewElement.querySelector('.review-author');
     var reviewRating = reviewElement.querySelector('.review-rating');
@@ -164,20 +171,13 @@
       reviewElement.classList.add('review-load-failure');
     };
 
-    image.src = reviewItem.author.picture;
+    image.src = review.author.picture;
 
-    reviewAuthor.title = reviewItem.author.name;
-    reviewRating.textContent = reviewItem.rating;
-    reviewText.textContent = reviewItem.description;
+    reviewAuthor.title = review.author.name;
+    reviewRating.textContent = review.rating;
+    reviewText.textContent = review.description;
 
     return reviewElement;
   }
-
-  reviews.forEach(function(reviewItem) {
-    var reviewElement = retrieveReviewElement(reviewItem);
-    reviewsList.appendChild(reviewElement);
-  });
-
-  reviewsFilter.classList.remove('invisible');
 })();
 
