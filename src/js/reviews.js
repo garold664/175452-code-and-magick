@@ -145,32 +145,31 @@
 
   reviewsFilter.classList.add('invisible');
 
-  reviews.forEach(function() {
-    reviewsList.appendChild(reviewsTemplate.content.children[0].cloneNode(true));
-  });
+  reviews.forEach(function(reviewItem) {
+    var review = reviewsTemplate.content.children[0].cloneNode(true);
+    var reviewAuthor = review.querySelector('.review-author');
+    var reviewRating = review.querySelector('.review-rating');
+    var reviewText = review.querySelector('.review-text');
+    var image = new Image();
 
-  var review = reviewsList.querySelectorAll('.review');
-  var reviewAuthor = reviewsList.querySelectorAll('.review-author');
-  var reviewRating = reviewsList.querySelectorAll('.review-rating');
-  var reviewText = reviewsList.querySelectorAll('.review-text');
-
-  reviews.forEach(function(reviewItem, i) {
-    reviewAuthor[i].title = reviewItem.author.name;
-
-    reviewAuthor[i].onload = function() {
-      this.width = 124;
-      this.height = 124;
+    // review.removeChild(reviewAuthor);
+    image.onload = function() {
+      reviewAuthor.width = 124;
+      reviewAuthor.height = 124;
+      reviewAuthor.src = image.src;
     };
-    reviewAuthor[i].onerror = function() {
-      this.parentNode.classList.add('review-load-failure');
+    image.onerror = function() {
+      review.classList.add('review-load-failure');
     };
 
-    review[i].removeChild(reviewAuthor[i]);
-    reviewAuthor[i] = new Image();
-    reviewAuthor[i].src = reviews[i].author.picture;
-    review[i].insertBefore(reviewAuthor[i], reviewRating[i]);
-    reviewRating[i].innerHTML = reviewItem.rating;
-    reviewText[i].innerHTML = reviewItem.description;
+    image.src = reviewItem.author.picture;
+
+    reviewAuthor.title = reviewItem.author.name;
+    reviewRating.innerHTML = reviewItem.rating;
+    reviewText.innerHTML = reviewItem.description;
+
+    reviewsList.appendChild(review);
+
   });
 
   reviewsFilter.classList.remove('invisible');
