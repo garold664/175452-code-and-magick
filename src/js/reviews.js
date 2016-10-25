@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-  var reviews = [{
+  var reviewsJSON = [{
     'author': {
       'name': 'Иванов Иван',
       'picture': 'img/user-1.jpg'
@@ -145,10 +145,9 @@
   var reviewsFilter = document.querySelector('.reviews-filter');
 
   hideElement(reviewsFilter);
-  renderReviews(reviews);
+  renderReviews(reviewsJSON);
   showElement(reviewsFilter);
 
-// eslint-disable-next-line no-shadow
   function renderReviews(reviews) {
     reviews.forEach(function(review) {
       var reviewElement = compileReview(review);
