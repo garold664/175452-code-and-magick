@@ -145,9 +145,7 @@
   var reviewsFilter = document.querySelector('.reviews-filter');
 
   hideElement(reviewsFilter);
-
   renderReviews(reviews);
-
   showElement(reviewsFilter);
 
 // eslint-disable-next-line no-shadow
