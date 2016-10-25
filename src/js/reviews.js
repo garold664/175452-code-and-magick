@@ -9,10 +9,10 @@
   var reviewsFilter = document.querySelector('.reviews-filter');
 
   hideElement(reviewsFilter);
-  load(REVIEWS_LOAD_URL, renderReviews);
-  showElement(reviewsFilter);
+  handleJSONPResponse(REVIEWS_LOAD_URL, showReviews);
 
-  function load(url, callback, callbackName) {
+
+  function handleJSONPResponse(url, callback, callbackName) {
     if (!callbackName) {
       callbackName = 'cb' + Date.now();
     }
@@ -24,6 +24,11 @@
     var script = document.createElement('script');
     script.src = url + '?callback=' + callbackName;
     document.body.appendChild(script);
+  }
+
+  function showReviews(data) {
+    renderReviews(data);
+    showElement(reviewsFilter);
   }
 
   function renderReviews(reviews) {
