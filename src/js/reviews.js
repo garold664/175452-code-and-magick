@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-  var reviewsJSON = [{
+  var reviews = [{
     'author': {
       'name': 'Иванов Иван',
       'picture': 'img/user-1.jpg'
@@ -143,7 +143,6 @@
   var templateReviewElement = templateContainer.children[0];
   var reviewsList = document.querySelector('.reviews-list');
   var reviewsFilter = document.querySelector('.reviews-filter');
-  var reviews = reviewsJSON;
   var IMAGE_SIZE = 124;
 
   reviewsFilter.classList.add('invisible');
