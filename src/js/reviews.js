@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+define(function() {
   var REVIEWS_LOAD_URL = 'http://localhost:1507/api/reviews';
   var template = document.querySelector('#review-template');
   var templateContainer = 'content' in template ? template.content : template;
@@ -71,5 +71,5 @@
   function hideElement(element) {
     element.classList.add('invisible');
   }
-})();
+});
 
