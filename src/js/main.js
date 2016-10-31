@@ -21,7 +21,6 @@ define(['./form', './game', './gallery.js', './reviews'], function(form, Game, G
   form.onClose = function() {
     game.setDeactivated(false);
   };
-<<<<<<< HEAD
 
   var pictureElements = document.querySelectorAll('.photogallery-image img');
   var pictures = retrieveSrcs(pictureElements);
@@ -53,7 +52,5 @@ define(['./form', './game', './gallery.js', './reviews'], function(form, Game, G
       return element.src;
     });
   }
-=======
->>>>>>> master
 });
 
