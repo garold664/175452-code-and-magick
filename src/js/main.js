@@ -22,26 +22,34 @@ define(['./form', './game', './gallery.js', './reviews'], function(form, Game, G
   };
 
   var pictureElements = document.querySelectorAll('.photogallery-image img');
-  var pictures = Array.prototype.map.call(pictureElements, function(element) {
-    return element.src;
-  });
-
+  var pictures = retrieveSrcs(pictureElements);
   var gallery = new Gallery(pictures);
-
   var photogallery = document.querySelector('.photogallery');
 
-  photogallery.addEventListener('click', function(evt) {
-    var currentElement = evt.target.parentNode;
+  photogallery.addEventListener('click', initGallery);
 
-    console.log(currentElement);
-    var elements = document.querySelectorAll('.photogallery-image');
-
-    for (var i = 0; i < elements.length; i++) {
-      if (elements[i] === currentElement) {
-        gallery.show(i + 1);
-        break;
-      }
+  function initGallery(evt) {
+    var target = evt.target;
+    var currentElement;
+    var elements;
+    var i;
+    if (target.nodeName.toLowerCase() !== 'img') {
+      return;
     }
-  });
+    currentElement = target.parentNode;
+    elements = document.querySelectorAll('.photogallery-image');
+    elements = Array.prototype.slice.call(elements);
+    i = elements.indexOf(currentElement);
+    if (i === -1) {
+      return;
+    }
+    gallery.show(i + 1);
+  }
+
+  function retrieveSrcs(elements) {
+    return Array.prototype.map.call(elements, function(element) {
+      return element.src;
+    });
+  }
 });
 
