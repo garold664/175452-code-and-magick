@@ -31,7 +31,7 @@ define(['./form', './game', './gallery.js', './reviews'], function(form, Game, G
 
   function initGallery(evt) {
     var target = evt.target;
-    if (target.nodeName.toLowerCase() !== 'img') {
+    if (target.nodeName !== 'img') {
       return;
     }
     var currentElement = target.parentNode;
