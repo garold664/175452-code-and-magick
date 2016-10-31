@@ -31,20 +31,17 @@ define(['./form', './game', './gallery.js', './reviews'], function(form, Game, G
 
   function initGallery(evt) {
     var target = evt.target;
-    var currentElement;
-    var elements;
-    var i;
     if (target.nodeName.toLowerCase() !== 'img') {
       return;
     }
-    currentElement = target.parentNode;
-    elements = document.querySelectorAll('.photogallery-image');
+    var currentElement = target.parentNode;
+    var elements = document.querySelectorAll('.photogallery-image');
     elements = Array.prototype.slice.call(elements);
-    i = elements.indexOf(currentElement);
-    if (i === -1) {
+    var index = elements.indexOf(currentElement);
+    if (index === -1) {
       return;
     }
-    gallery.show(i + 1);
+    gallery.show(index + 1);
   }
 
   function retrieveSrcs(elements) {

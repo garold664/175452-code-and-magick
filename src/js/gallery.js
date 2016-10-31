@@ -38,9 +38,13 @@ define(function() {
     this.overlay.classList.remove('invisible');
     this.picturesQuantity.innerText = this.pictures.length;
 
-    this.buttonClose.addEventListener('click', this.hide.bind(this));
-    this.buttonPrevious.addEventListener('click', this.showPrevious.bind(this));
-    this.buttonNext.addEventListener('click', this.showNext.bind(this));
+    this.hide = this.hide.bind(this);
+    this.showPrevious = this.showPrevious.bind(this);
+    this.showNext = this.showNext.bind(this);
+
+    this.buttonClose.addEventListener('click', this.hide);
+    this.buttonPrevious.addEventListener('click', this.showPrevious);
+    this.buttonNext.addEventListener('click', this.showNext);
 
     this.setActivePicture(currentNumber);
   };
@@ -48,9 +52,9 @@ define(function() {
   Gallery.prototype.hide = function() {
     this.overlay.classList.add('invisible');
 
-    this.buttonClose.removeEventListener('click', this.hide.bind(this));
-    this.buttonPrevious.removeEventListener('click', this.showPrevious.bind(this));
-    this.buttonNext.removeEventListener('click', this.showNext.bind(this));
+    this.buttonClose.removeEventListener('click', this.hide);
+    this.buttonPrevious.removeEventListener('click', this.showPrevious);
+    this.buttonNext.removeEventListener('click', this.showNext);
   };
 
   return Gallery;
