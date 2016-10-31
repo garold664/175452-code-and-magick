@@ -1,5 +1,6 @@
 'use strict';
 
+
 define(['./form', './game', './gallery.js', './reviews'], function(form, Game, Gallery) {
   var game = new Game(document.querySelector('.demo'));
   game.initializeLevelAndStart();
@@ -20,6 +21,7 @@ define(['./form', './game', './gallery.js', './reviews'], function(form, Game, G
   form.onClose = function() {
     game.setDeactivated(false);
   };
+<<<<<<< HEAD
 
   var pictureElements = document.querySelectorAll('.photogallery-image img');
   var pictures = retrieveSrcs(pictureElements);
@@ -51,5 +53,7 @@ define(['./form', './game', './gallery.js', './reviews'], function(form, Game, G
       return element.src;
     });
   }
+=======
+>>>>>>> master
 });
 
