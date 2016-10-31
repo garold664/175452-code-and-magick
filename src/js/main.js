@@ -1,6 +1,7 @@
 'use strict';
 
-define(['./form', './game', './reviews'], function(form, Game) {
+
+define(['./form', './game', './gallery.js', './reviews'], function(form, Game, Gallery) {
   var game = new Game(document.querySelector('.demo'));
   game.initializeLevelAndStart();
   game.setGameStatus(Game.Verdict.INTRO);
@@ -20,5 +21,33 @@ define(['./form', './game', './reviews'], function(form, Game) {
   form.onClose = function() {
     game.setDeactivated(false);
   };
+
+  var pictureElements = document.querySelectorAll('.photogallery-image img');
+  var pictures = retrieveSrcs(pictureElements);
+  var gallery = new Gallery(pictures);
+  var photogallery = document.querySelector('.photogallery');
+
+  photogallery.addEventListener('click', initGallery);
+
+  function initGallery(evt) {
+    var target = evt.target;
+    if (target.nodeName !== 'IMG') {
+      return;
+    }
+    var currentElement = target.parentNode;
+    var elements = document.querySelectorAll('.photogallery-image');
+    elements = Array.prototype.slice.call(elements);
+    var index = elements.indexOf(currentElement);
+    if (index === -1) {
+      return;
+    }
+    gallery.show(index + 1);
+  }
+
+  function retrieveSrcs(elements) {
+    return Array.prototype.map.call(elements, function(element) {
+      return element.src;
+    });
+  }
 });
 
