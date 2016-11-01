@@ -1,31 +1,63 @@
 'use strict';
 
 define(function() {
-  function compileReview(review, templateReview) {
-    var IMAGE_SIZE = 124;
-    var reviewElement = templateReview.cloneNode(true);
-    var reviewAuthor = reviewElement.querySelector('.review-author');
-    var reviewRating = reviewElement.querySelector('.review-rating');
-    var reviewText = reviewElement.querySelector('.review-text');
-    var image = new Image();
+  function Review(review, templateReview) {
+    this.data = review;
+    this.IMAGE_SIZE = 124;
+    this.element = templateReview;
+    this.author = this.element.querySelector('.review-author');
+    this.rating = this.element.querySelector('.review-rating');
+    this.text = this.element.querySelector('.review-text');
+    this.image = new Image();
 
-    image.onload = function() {
-      reviewAuthor.width = IMAGE_SIZE;
-      reviewAuthor.height = IMAGE_SIZE;
-      reviewAuthor.src = image.src;
-    };
+    this.image.src = this.data.author.picture;
+    this.author.title = this.data.author.name;
+    this.rating.textContent = this.data.rating;
+    this.text.textContent = this.data.description;
 
-    image.onerror = function() {
-      reviewElement.classList.add('review-load-failure');
-    };
+    this.quiz = this.element.querySelector('.review-quiz');
 
-    image.src = review.author.picture;
-    reviewAuthor.title = review.author.name;
-    reviewRating.textContent = review.rating;
-    reviewText.textContent = review.description;
+    this.quizHandler = this.quizHandler.bind(this);
+    this.loadHandler = this.loadHandler.bind(this);
+    this.errorHandler = this.errorHandler.bind(this);
 
-    return reviewElement;
+    this.quiz.addEventListener('click', this.quizHandler);
+    this.image.addEventListener('load', this.loadHandler);
+    this.image.addEventListener('error', this.errorHandler);
   }
 
-  return compileReview;
+  Review.prototype.loadHandler = function() {
+    this.author.width = this.IMAGE_SIZE;
+    this.author.height = this.IMAGE_SIZE;
+    this.author.src = this.image.src;
+  };
+
+  Review.prototype.errorHandler = function() {
+    this.element.classList.add('review-load-failure');
+  };
+
+  Review.prototype.quizHandler = function(evt) {
+    var target = evt.target;
+    var parent = target.parentNode;
+    var quizClassName = 'review-quiz-answer';
+    var quizClassNameActive = 'review-quiz-answer-active';
+    var activeEl = parent.querySelector('.' + quizClassNameActive);
+
+    if (activeEl) {
+      activeEl.classList.remove(quizClassNameActive);
+    }
+    if (!(target.classList.contains(quizClassName))) {
+      return;
+    }
+
+    target.classList.add(quizClassNameActive);
+  };
+
+  Review.prototype.remove = function() {
+    this.quiz.removeEventListener('click', this.quizHandler);
+    this.image.removeEventListener('load', this.loadHandler);
+    this.image.removeEventListener('error', this.errorHandler);
+  };
+
+  return Review;
 });
