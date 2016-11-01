@@ -4,20 +4,18 @@ define(function() {
   function Review(review, templateReview) {
     this.data = review;
     this.IMAGE_SIZE = 124;
-    this.element = templateReview.cloneNode(true);
-    this.reviewAuthor = this.element.querySelector('.review-author');
+    this.element = templateReview;
+    this.author = this.element.querySelector('.review-author');
     this.reviewRating = this.element.querySelector('.review-rating');
     this.reviewText = this.element.querySelector('.review-text');
     this.image = new Image();
 
     this.image.src = this.data.author.picture;
-    this.reviewAuthor.title = this.data.author.name;
+    this.author.title = this.data.author.name;
     this.reviewRating.textContent = this.data.rating;
     this.reviewText.textContent = this.data.description;
 
     this.quiz = this.element.querySelector('.review-quiz');
-    this.quizClassName = 'review-quiz-answer';
-    this.quizClassNameActive = 'review-quiz-answer-active';
 
     this.quizHandler = this.quizHandler.bind(this);
     this.loadHandler = this.loadHandler.bind(this);
@@ -29,9 +27,9 @@ define(function() {
   }
 
   Review.prototype.loadHandler = function() {
-    this.reviewAuthor.width = this.IMAGE_SIZE;
-    this.reviewAuthor.height = this.IMAGE_SIZE;
-    this.reviewAuthor.src = this.image.src;
+    this.author.width = this.IMAGE_SIZE;
+    this.author.height = this.IMAGE_SIZE;
+    this.author.src = this.image.src;
   };
 
   Review.prototype.errorHandler = function() {
@@ -41,52 +39,25 @@ define(function() {
   Review.prototype.quizHandler = function(evt) {
     var target = evt.target;
     var parent = target.parentNode;
-    var activeEl = parent.querySelector('.' + this.quizClassNameActive);
+    var quizClassName = 'review-quiz-answer';
+    var quizClassNameActive = 'review-quiz-answer-active';
+    var activeEl = parent.querySelector('.' + quizClassNameActive);
 
     if (activeEl) {
-      activeEl.classList.remove(this.quizClassNameActive);
+      activeEl.classList.remove(quizClassNameActive);
     }
-    if (!(target.classList.contains(this.quizClassName))) {
+    if (!(target.classList.contains(quizClassName))) {
       return;
     }
 
-    target.classList.add(this.quizClassNameActive);
+    target.classList.add(quizClassNameActive);
   };
 
   Review.prototype.remove = function() {
     this.quiz.removeEventListener('click', this.quizHandler);
-    this.image.removeEventListener('click', this.loadHandler);
-    this.image.removeEventListener('click', this.errorHandler);
+    this.image.removeEventListener('load', this.loadHandler);
+    this.image.removeEventListener('error', this.errorHandler);
   };
 
   return Review;
 });
-
-
-// function compileReview(review, templateReview) {
-//     var IMAGE_SIZE = 124;
-//     var reviewElement = templateReview.cloneNode(true);
-//     var reviewAuthor = reviewElement.querySelector('.review-author');
-//     var reviewRating = reviewElement.querySelector('.review-rating');
-//     var reviewText = reviewElement.querySelector('.review-text');
-//     var image = new Image();
-
-//     image.onload = function() {
-//       reviewAuthor.width = IMAGE_SIZE;
-//       reviewAuthor.height = IMAGE_SIZE;
-//       reviewAuthor.src = image.src;
-//     };
-
-//     image.onerror = function() {
-//       reviewElement.classList.add('review-load-failure');
-//     };
-
-//     image.src = review.author.picture;
-//     reviewAuthor.title = review.author.name;
-//     reviewRating.textContent = review.rating;
-//     reviewText.textContent = review.description;
-
-//     return reviewElement;
-//   }
-
-//   return compileReview;

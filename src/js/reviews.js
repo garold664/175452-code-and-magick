@@ -18,10 +18,9 @@ define(['./review', './load'], function(Review, load) {
   }
 
   function renderReviews(reviews) {
-    reviews.forEach(function(review) {
-      var reviewObj = new Review(review, templateReviewElement);
-      var reviewElement = reviewObj.element;
-      reviewsList.appendChild(reviewElement);
+    reviews.forEach(function(item) {
+      var review = new Review(item, templateReviewElement.cloneNode(true));
+      reviewsList.appendChild(review.element);
     });
   }
 
