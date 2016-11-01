@@ -1,12 +1,13 @@
 'use strict';
 
-define(['./review', './load'], function(compileReview, load) {
+define(['./review', './load'], function(Review, load) {
   var REVIEWS_LOAD_URL = 'http://localhost:1507/api/reviews';
   var template = document.querySelector('#review-template');
   var templateContainer = 'content' in template ? template.content : template;
   var templateReviewElement = templateContainer.firstElementChild;
   var reviewsList = document.querySelector('.reviews-list');
   var reviewsFilter = document.querySelector('.reviews-filter');
+
 
   hideElement(reviewsFilter);
   load(REVIEWS_LOAD_URL, showReviews);
@@ -18,7 +19,8 @@ define(['./review', './load'], function(compileReview, load) {
 
   function renderReviews(reviews) {
     reviews.forEach(function(review) {
-      var reviewElement = compileReview(review, templateReviewElement);
+      var reviewObj = new Review(review, templateReviewElement);
+      var reviewElement = reviewObj.element;
       reviewsList.appendChild(reviewElement);
     });
   }
@@ -30,5 +32,6 @@ define(['./review', './load'], function(compileReview, load) {
   function hideElement(element) {
     element.classList.add('invisible');
   }
+
 });
 
