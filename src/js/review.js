@@ -6,14 +6,14 @@ define(function() {
     this.IMAGE_SIZE = 124;
     this.element = templateReview;
     this.author = this.element.querySelector('.review-author');
-    this.reviewRating = this.element.querySelector('.review-rating');
-    this.reviewText = this.element.querySelector('.review-text');
+    this.rating = this.element.querySelector('.review-rating');
+    this.text = this.element.querySelector('.review-text');
     this.image = new Image();
 
     this.image.src = this.data.author.picture;
     this.author.title = this.data.author.name;
-    this.reviewRating.textContent = this.data.rating;
-    this.reviewText.textContent = this.data.description;
+    this.rating.textContent = this.data.rating;
+    this.text.textContent = this.data.description;
 
     this.quiz = this.element.querySelector('.review-quiz');
 
