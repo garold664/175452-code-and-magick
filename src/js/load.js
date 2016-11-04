@@ -16,7 +16,6 @@ define(function() {
     };
 
     xhr.open('GET', url + '?' + getSearchString(params));
-
     xhr.send();
   }
 

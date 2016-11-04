@@ -17,9 +17,7 @@ define(['./review', './load'], function(Review, load) {
 
   showElement(moreReviewsBtn);
   moreReviewsBtn.addEventListener('click', showMoreReviews);
-
   reviewsFilter.addEventListener('change', applyFilter, true);
-
 
   function applyFilter(evt) {
     var target = evt.target;
@@ -61,7 +59,6 @@ define(['./review', './load'], function(Review, load) {
       var review = new Review(item, templateReviewElement.cloneNode(true));
       reviewsList.appendChild(review.element);
     });
-
   }
 
   function showElement(element) {
@@ -71,6 +68,5 @@ define(['./review', './load'], function(Review, load) {
   function hideElement(element) {
     element.classList.add('invisible');
   }
-
 });
 
