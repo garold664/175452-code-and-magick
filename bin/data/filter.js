@@ -6,7 +6,7 @@ module.exports = function(list, filterID) {
       return list;
 
     case 'reviews-recent':
-      return list;
+      return [];
 
     case 'reviews-good':
       return list.filter(function(item) {

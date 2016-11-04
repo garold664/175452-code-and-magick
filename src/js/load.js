@@ -7,7 +7,7 @@ define(function() {
     }).join('&');
   };
 
-  return function(url, params, callback) {
+  function handleJSONPResponse(url, params, callback) {
     var xhr = new XMLHttpRequest();
 
     xhr.onload = function(evt) {
@@ -18,5 +18,7 @@ define(function() {
     xhr.open('GET', url + '?' + getSearchString(params));
 
     xhr.send();
-  };
+  }
+
+  return handleJSONPResponse;
 });
