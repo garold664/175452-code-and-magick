@@ -6,7 +6,16 @@ module.exports = function(list, filterID) {
       return list;
 
     case 'reviews-recent':
-      return [];
+      return list.filter(function(item) {
+        var createdTime = item.created;
+        var now = Date.now();
+        var millisecondsInDay = (1000 * 60 * 60 * 24);
+        var elapsedDays = (now - createdTime)/millisecondsInDay;
+
+        return elapsedDays <= 3;
+      }).sort(function(a, b) {
+        return b.created - a.created;
+      });
 
     case 'reviews-good':
       return list.filter(function(item) {
