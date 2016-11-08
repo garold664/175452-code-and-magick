@@ -12,10 +12,10 @@ define(['./review', './load'], function(Review, load) {
   var pageNumber = 0;
   var pageSize = 3;
 
-  hideElement(reviewsFilter);
+  hide(reviewsFilter);
   loadPage('reviews-all', pageNumber);
 
-  showElement(moreReviewsBtn);
+  show(moreReviewsBtn);
   moreReviewsBtn.addEventListener('click', showMoreReviews);
   reviewsFilter.addEventListener('change', applyFilter, true);
 
@@ -26,7 +26,7 @@ define(['./review', './load'], function(Review, load) {
       pageNumber = 0;
       filterID = target.id;
       loadPage(filterID, pageNumber);
-      showElement(moreReviewsBtn);
+      show(moreReviewsBtn);
     }
   }
 
@@ -47,12 +47,12 @@ define(['./review', './load'], function(Review, load) {
 
   function showReviews(data) {
     renderReviews(data);
-    showElement(reviewsFilter);
+    show(reviewsFilter);
   }
 
   function renderReviews(reviews) {
     if (reviews.length < pageSize) {
-      hideElement(moreReviewsBtn);
+      hide(moreReviewsBtn);
     }
 
     reviews.forEach(function(item) {
@@ -61,11 +61,11 @@ define(['./review', './load'], function(Review, load) {
     });
   }
 
-  function showElement(element) {
+  function show(element) {
     element.classList.remove('invisible');
   }
 
-  function hideElement(element) {
+  function hide(element) {
     element.classList.add('invisible');
   }
 });
