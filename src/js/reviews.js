@@ -13,7 +13,7 @@ define(['./review', './load'], function(Review, load) {
   var pageSize = 3;
 
   hide(reviewsFilter);
-  loadPage('reviews-all', pageNumber);
+  loadPage(pageNumber);
 
   show(moreReviewsBtn);
   moreReviewsBtn.addEventListener('click', showMoreReviews);
@@ -24,19 +24,19 @@ define(['./review', './load'], function(Review, load) {
     if (target.type === 'radio') {
       reviewsList.innerHTML = '';
       pageNumber = 0;
-      filterID = target.id;
-      loadPage(filterID, pageNumber);
+      loadPage(pageNumber);
       show(moreReviewsBtn);
     }
   }
 
   function showMoreReviews() {
-    loadPage(filterID, ++pageNumber);
+    loadPage(++pageNumber);
   }
 
-  function loadPage(filter, currentPageNumber) {
+  function loadPage(currentPageNumber) {
     var fromItem = currentPageNumber * pageSize;
     var toItem = fromItem + pageSize;
+    var filter = reviewsFilter.querySelector('input:checked').id;
 
     load(REVIEWS_LOAD_URL, {
       from: fromItem,
