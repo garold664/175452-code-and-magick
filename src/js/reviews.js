@@ -1,16 +1,17 @@
 'use strict';
 
 define(['./review', './load'], function(Review, load) {
-  var REVIEWS_LOAD_URL = '/api/reviews';
   var template = document.querySelector('#review-template');
   var templateContainer = 'content' in template ? template.content : template;
   var templateReviewElement = templateContainer.firstElementChild;
   var reviewsList = document.querySelector('.reviews-list');
   var reviewsFilter = document.querySelector('.reviews-filter');
-  var filterID = 'reviews-all';
   var moreReviewsBtn = document.querySelector('.reviews-controls-more');
+
+  var filterID = 'reviews-all';
   var pageNumber = -1;
   var pageSize = 3;
+  var instancesOfReview = [];
 
   hide(reviewsFilter);
   loadPage();
@@ -21,13 +22,19 @@ define(['./review', './load'], function(Review, load) {
 
   function applyFilter(evt) {
     var target = evt.target;
-    if (target.type === 'radio') {
-      reviewsList.innerHTML = '';
-      filterID = target.id;
-      pageNumber = -1;
-      loadPage();
-      show(moreReviewsBtn);
+    if (target.type !== 'radio') {
+      return;
     }
+    reviewsList.innerHTML = '';
+    instancesOfReview.forEach(function(review) {
+      review.remove();
+    });
+    instancesOfReview = [];
+
+    filterID = target.id;
+    pageNumber = -1;
+    loadPage();
+    show(moreReviewsBtn);
   }
 
   function showMoreReviews() {
@@ -35,14 +42,15 @@ define(['./review', './load'], function(Review, load) {
   }
 
   function loadPage() {
+
+    var REVIEWS_LOAD_URL = '/api/reviews';
     var fromItem = ++pageNumber * pageSize;
     var toItem = fromItem + pageSize;
-    var filter = filterID;
 
     load(REVIEWS_LOAD_URL, {
       from: fromItem,
       to: toItem,
-      filter: filter
+      filter: filterID
     }, showReviews);
   }
 
@@ -58,6 +66,7 @@ define(['./review', './load'], function(Review, load) {
 
     reviews.forEach(function(item) {
       var review = new Review(item, templateReviewElement.cloneNode(true));
+      instancesOfReview.push(review);
       reviewsList.appendChild(review.element);
     });
   }
