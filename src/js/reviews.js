@@ -7,13 +7,13 @@ define(['./review', './load'], function(Review, load) {
   var templateReviewElement = templateContainer.firstElementChild;
   var reviewsList = document.querySelector('.reviews-list');
   var reviewsFilter = document.querySelector('.reviews-filter');
-  var filterID;
+  var filterID = 'reviews-all';
   var moreReviewsBtn = document.querySelector('.reviews-controls-more');
-  var pageNumber = 0;
+  var pageNumber = -1;
   var pageSize = 3;
 
   hide(reviewsFilter);
-  loadPage(pageNumber);
+  loadPage();
 
   show(moreReviewsBtn);
   moreReviewsBtn.addEventListener('click', showMoreReviews);
@@ -23,20 +23,21 @@ define(['./review', './load'], function(Review, load) {
     var target = evt.target;
     if (target.type === 'radio') {
       reviewsList.innerHTML = '';
-      pageNumber = 0;
-      loadPage(pageNumber);
+      filterID = target.id;
+      pageNumber = -1;
+      loadPage();
       show(moreReviewsBtn);
     }
   }
 
   function showMoreReviews() {
-    loadPage(++pageNumber);
+    loadPage();
   }
 
-  function loadPage(currentPageNumber) {
-    var fromItem = currentPageNumber * pageSize;
+  function loadPage() {
+    var fromItem = ++pageNumber * pageSize;
     var toItem = fromItem + pageSize;
-    var filter = reviewsFilter.querySelector('input:checked').id;
+    var filter = filterID;
 
     load(REVIEWS_LOAD_URL, {
       from: fromItem,
