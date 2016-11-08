@@ -1,6 +1,7 @@
 'use strict';
 
 define(function() {
+
   /**
    * @const
    * @type {number}
@@ -748,17 +749,48 @@ define(function() {
       }
     },
 
+    initParallax: function() {
+      var gameBlock = document.body.firstElementChild;
+      var clouds = gameBlock.querySelector('.header-clouds');
+      var lastCall = Date.now();
+      var setGameStatus = this.setGameStatus.bind(this);
+      clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
+
+      window.addEventListener('scroll', setParallaxStatus);
+
+      function startParallax() {
+        clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
+      }
+
+      function setParallaxStatus() {
+        var now = Date.now();
+        if ((now - lastCall) > 100) {
+          if (gameBlock.getBoundingClientRect().bottom < 0) {
+            window.removeEventListener('scroll', startParallax);
+            setGameStatus(Verdict.PAUSE);
+          } else {
+            window.addEventListener('scroll', startParallax);
+          }
+
+          lastCall = Date.now();
+        }
+      }
+    },
+
     /** @private */
     _initializeGameListeners: function() {
       window.addEventListener('keydown', this._onKeyDown);
       window.addEventListener('keyup', this._onKeyUp);
+      this.initParallax();
     },
 
     /** @private */
     _removeGameListeners: function() {
       window.removeEventListener('keydown', this._onKeyDown);
       window.removeEventListener('keyup', this._onKeyUp);
+      this.initParallax();
     }
+
   };
 
   Game.Verdict = Verdict;
