@@ -756,24 +756,36 @@ define(function() {
       var setGameStatus = this.setGameStatus.bind(this);
       clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
 
-      window.addEventListener('scroll', setParallaxStatus);
+      window.addEventListener('scroll', throttle(pauseGame, 100));
+      window.addEventListener('scroll', runParallax);
 
       function startParallax() {
-        clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
+        throttle(pauseGame, 100);
       }
 
-      function setParallaxStatus() {
-        var now = Date.now();
-        if ((now - lastCall) > 100) {
-          if (gameBlock.getBoundingClientRect().bottom < 0) {
-            window.removeEventListener('scroll', startParallax);
-            setGameStatus(Verdict.PAUSE);
-          } else {
-            window.addEventListener('scroll', startParallax);
-          }
-
-          lastCall = Date.now();
+      function runParallax() {
+        if (gameBlock.getBoundingClientRect().bottom > 0) {
+          clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
+          console.log('scroll');
         }
+      }
+
+      function pauseGame() {
+        if (gameBlock.getBoundingClientRect().bottom < 0) {
+          console.log('hello');
+          setGameStatus(Verdict.PAUSE);
+        }
+      }
+
+      function throttle(fn, delay) {
+        var lastCall = Date.now();
+        return function () {
+          var now = Date.now();
+          if ((now - lastCall) > delay) {
+            fn();
+            lastCall = now;
+          }
+        };
       }
     },
 
