@@ -754,6 +754,7 @@ define(function() {
       var clouds = gameBlock.querySelector('.header-clouds');
       var lastCall = Date.now();
       var setGameStatus = this.setGameStatus.bind(this);
+      var pauseGameThrottled = throttle(pauseGame, 100);
 
       clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
 
@@ -761,7 +762,7 @@ define(function() {
 
       function startParallax() {
         runParallax();
-        throttle(pauseGame, 100)();
+        pauseGameThrottled();
       }
 
       function runParallax() {
