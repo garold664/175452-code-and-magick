@@ -754,33 +754,34 @@ define(function() {
       var clouds = gameBlock.querySelector('.header-clouds');
       var lastCall = Date.now();
       var setGameStatus = this.setGameStatus.bind(this);
+
       clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
 
-      window.addEventListener('scroll', throttle(pauseGame, 100));
-      window.addEventListener('scroll', runParallax);
+      window.addEventListener('scroll', startParallax);
 
       function startParallax() {
-        throttle(pauseGame, 100);
+        runParallax();
+        throttle(pauseGame, 100)();
       }
 
       function runParallax() {
         if (gameBlock.getBoundingClientRect().bottom > 0) {
           clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
-          console.log('scroll');
         }
       }
 
       function pauseGame() {
         if (gameBlock.getBoundingClientRect().bottom < 0) {
-          console.log('hello');
           setGameStatus(Verdict.PAUSE);
         }
       }
 
       function throttle(fn, delay) {
-        var lastCall = Date.now();
-        return function () {
+        window.lastCall = Date.now();
+
+        return function() {
           var now = Date.now();
+
           if ((now - lastCall) > delay) {
             fn();
             lastCall = now;
