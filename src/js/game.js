@@ -1,6 +1,7 @@
 'use strict';
 
 define(function() {
+
   /**
    * @const
    * @type {number}
@@ -748,17 +749,62 @@ define(function() {
       }
     },
 
+    initParallax: function() {
+      var gameBlock = document.body.firstElementChild;
+      var clouds = gameBlock.querySelector('.header-clouds');
+      var lastCall = Date.now();
+      var setGameStatus = this.setGameStatus.bind(this);
+      var pauseGameThrottled = throttle(pauseGame, 100);
+
+      clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
+
+      window.addEventListener('scroll', startParallax);
+
+      function startParallax() {
+        runParallax();
+        pauseGameThrottled();
+      }
+
+      function runParallax() {
+        if (gameBlock.getBoundingClientRect().bottom > 0) {
+          clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
+        }
+      }
+
+      function pauseGame() {
+        if (gameBlock.getBoundingClientRect().bottom < 0) {
+          setGameStatus(Verdict.PAUSE);
+        }
+      }
+
+      function throttle(fn, delay) {
+        window.lastCall = Date.now();
+
+        return function() {
+          var now = Date.now();
+
+          if ((now - lastCall) > delay) {
+            fn();
+            lastCall = now;
+          }
+        };
+      }
+    },
+
     /** @private */
     _initializeGameListeners: function() {
       window.addEventListener('keydown', this._onKeyDown);
       window.addEventListener('keyup', this._onKeyUp);
+      this.initParallax();
     },
 
     /** @private */
     _removeGameListeners: function() {
       window.removeEventListener('keydown', this._onKeyDown);
       window.removeEventListener('keyup', this._onKeyUp);
+      this.initParallax();
     }
+
   };
 
   Game.Verdict = Verdict;
