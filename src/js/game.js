@@ -752,13 +752,16 @@ define(function() {
     initParallax: function() {
       var gameBlock = document.body.firstElementChild;
       var clouds = gameBlock.querySelector('.header-clouds');
-      var lastCall = Date.now();
       var setGameStatus = this.setGameStatus.bind(this);
       var pauseGameThrottled = throttle(pauseGame, 100);
 
-      clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
+      changeBackgroundPosition(clouds);
 
       window.addEventListener('scroll', startParallax);
+
+      function changeBackgroundPosition(element) {
+        element.style.backgroundPositionX = -window.pageYOffset + 'px';
+      }
 
       function startParallax() {
         runParallax();
@@ -767,7 +770,7 @@ define(function() {
 
       function runParallax() {
         if (gameBlock.getBoundingClientRect().bottom > 0) {
-          clouds.style.backgroundPositionX = -window.pageYOffset + 'px';
+          changeBackgroundPosition(clouds);
         }
       }
 
@@ -778,7 +781,7 @@ define(function() {
       }
 
       function throttle(fn, delay) {
-        window.lastCall = Date.now();
+        var lastCall = Date.now();
 
         return function() {
           var now = Date.now();
