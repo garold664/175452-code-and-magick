@@ -771,16 +771,12 @@ define(function() {
       function runParallax() {
         if (gameBlock.getBoundingClientRect().bottom > 0) {
           changeBackgroundPosition(clouds);
-
-          console.log('scrolled');
         }
       }
 
       function pauseGame() {
         if (gameBlock.getBoundingClientRect().bottom < 0) {
           setGameStatus(Verdict.PAUSE);
-
-          console.log('paused')
         }
       }
 
