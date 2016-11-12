@@ -13,6 +13,8 @@ define(['./review', './load'], function(Review, load) {
   var instancesOfReview = [];
   var filterID = 'reviews-all';
 
+  filterID = localStorage.getItem('filterID') || filterID;
+
   hide(reviewsFilter);
   loadPage();
 
@@ -32,40 +34,35 @@ define(['./review', './load'], function(Review, load) {
     instancesOfReview = [];
 
     localStorage.setItem('filterID', target.id);
+    filterID = target.id;
     pageNumber = -1;
     loadPage();
     show(moreReviewsBtn);
   }
 
   function showMoreReviews() {
-    loadPage();
+    loadPage(renderReviews);
   }
 
-  function loadPage() {
-
+  function loadPage(renderFunction) {
     var REVIEWS_LOAD_URL = '/api/reviews';
     var fromItem = ++pageNumber * pageSize;
     var toItem = fromItem + pageSize;
 
-    filterID = localStorage.getItem('filterID') ? localStorage.getItem('filterID') : filterID;
+    renderFunction = renderFunction || showReviews;
 
     load(REVIEWS_LOAD_URL, {
       from: fromItem,
       to: toItem,
       filter: filterID
-    }, showReviews);
+    }, renderFunction);
   }
 
   function showReviews(data) {
     renderReviews(data);
     show(reviewsFilter);
 
-    var checkedFilter = reviewsFilter.querySelector('input:checked');
-
-    if (checkedFilter.id !== filterID) {
-      checkedFilter.checked = false;
-      document.getElementById(filterID).checked = true;
-    }
+    document.getElementById(filterID).checked = true;
   }
 
   function renderReviews(reviews) {
