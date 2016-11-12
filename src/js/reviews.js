@@ -11,9 +11,8 @@ define(['./review', './load'], function(Review, load) {
   var pageNumber = -1;
   var pageSize = 3;
   var instancesOfReview = [];
-  var filterID = 'reviews-all';
 
-  filterID = localStorage.getItem('filterID') || filterID;
+  var filterID = localStorage.getItem('filterID') || 'reviews-all';
 
   hide(reviewsFilter);
   loadPage();
@@ -33,8 +32,8 @@ define(['./review', './load'], function(Review, load) {
     });
     instancesOfReview = [];
 
-    localStorage.setItem('filterID', target.id);
     filterID = target.id;
+    localStorage.setItem('filterID', filterID);
     pageNumber = -1;
     loadPage();
     show(moreReviewsBtn);
@@ -49,13 +48,13 @@ define(['./review', './load'], function(Review, load) {
     var fromItem = ++pageNumber * pageSize;
     var toItem = fromItem + pageSize;
 
-    renderFunction = renderFunction || showReviews;
+    var callback = renderFunction || showReviews;
 
     load(REVIEWS_LOAD_URL, {
       from: fromItem,
       to: toItem,
       filter: filterID
-    }, renderFunction);
+    }, callback);
   }
 
   function showReviews(data) {
