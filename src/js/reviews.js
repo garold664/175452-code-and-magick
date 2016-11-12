@@ -8,10 +8,11 @@ define(['./review', './load'], function(Review, load) {
   var reviewsFilter = document.querySelector('.reviews-filter');
   var moreReviewsBtn = document.querySelector('.reviews-controls-more');
 
-  var filterID = 'reviews-all';
   var pageNumber = -1;
   var pageSize = 3;
   var instancesOfReview = [];
+
+  var filterID = localStorage.getItem('filterID') || 'reviews-all';
 
   hide(reviewsFilter);
   loadPage();
@@ -32,31 +33,35 @@ define(['./review', './load'], function(Review, load) {
     instancesOfReview = [];
 
     filterID = target.id;
+    localStorage.setItem('filterID', filterID);
     pageNumber = -1;
     loadPage();
     show(moreReviewsBtn);
   }
 
   function showMoreReviews() {
-    loadPage();
+    loadPage(renderReviews);
   }
 
-  function loadPage() {
-
+  function loadPage(renderFunction) {
     var REVIEWS_LOAD_URL = '/api/reviews';
     var fromItem = ++pageNumber * pageSize;
     var toItem = fromItem + pageSize;
+
+    var callback = renderFunction || showReviews;
 
     load(REVIEWS_LOAD_URL, {
       from: fromItem,
       to: toItem,
       filter: filterID
-    }, showReviews);
+    }, callback);
   }
 
   function showReviews(data) {
     renderReviews(data);
     show(reviewsFilter);
+
+    document.getElementById(filterID).checked = true;
   }
 
   function renderReviews(reviews) {
