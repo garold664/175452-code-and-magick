@@ -3,9 +3,10 @@
 define(['./review', './load'], function(Review, load) {
 
   function Reviews() {
-    this.template = document.querySelector('#review-template');
-    this.templateContainer = 'content' in this.template ? this.template.content : this.template;
-    this.templateReviewElement = this.templateContainer.firstElementChild;
+    var template = document.querySelector('#review-template');
+    var templateContainer = 'content' in template ? template.content : template;
+
+    this.templateReviewElement = templateContainer.firstElementChild;
     this.reviewsList = document.querySelector('.reviews-list');
     this.reviewsFilter = document.querySelector('.reviews-filter');
     this.moreReviewsBtn = document.querySelector('.reviews-controls-more');
@@ -14,13 +15,13 @@ define(['./review', './load'], function(Review, load) {
     this.pageSize = 3;
     this.instancesOfReview = [];
 
-    this.filterID = localStorage.getItem('filterID') || 'reviews-all';
-
     this.showMoreReviews = this.showMoreReviews.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
   }
 
   Reviews.prototype.init = function() {
+    this.filterID = localStorage.getItem('filterID') || 'reviews-all';
+
     this.hide(this.reviewsFilter);
     this.loadPage();
     this.show(this.moreReviewsBtn);
@@ -34,6 +35,7 @@ define(['./review', './load'], function(Review, load) {
     if (target.type !== 'radio') {
       return;
     }
+
     this.reviewsList.innerHTML = '';
     this.instancesOfReview.forEach(function(review) {
       review.remove();
