@@ -1,87 +1,100 @@
 'use strict';
 
 define(['./review', './load'], function(Review, load) {
-  var template = document.querySelector('#review-template');
-  var templateContainer = 'content' in template ? template.content : template;
-  var templateReviewElement = templateContainer.firstElementChild;
-  var reviewsList = document.querySelector('.reviews-list');
-  var reviewsFilter = document.querySelector('.reviews-filter');
-  var moreReviewsBtn = document.querySelector('.reviews-controls-more');
 
-  var pageNumber = -1;
-  var pageSize = 3;
-  var instancesOfReview = [];
+  function Reviews() {
+    this.template = document.querySelector('#review-template');
+    this.templateContainer = 'content' in this.template ? this.template.content : this.template;
+    this.templateReviewElement = this.templateContainer.firstElementChild;
+    this.reviewsList = document.querySelector('.reviews-list');
+    this.reviewsFilter = document.querySelector('.reviews-filter');
+    this.moreReviewsBtn = document.querySelector('.reviews-controls-more');
 
-  var filterID = localStorage.getItem('filterID') || 'reviews-all';
+    this.pageNumber = -1;
+    this.pageSize = 3;
+    this.instancesOfReview = [];
 
-  hide(reviewsFilter);
-  loadPage();
+    this.filterID = localStorage.getItem('filterID') || 'reviews-all';
 
-  show(moreReviewsBtn);
-  moreReviewsBtn.addEventListener('click', showMoreReviews);
-  reviewsFilter.addEventListener('change', applyFilter, true);
+    this.showMoreReviews = this.showMoreReviews.bind(this);
+    this.applyFilter = this.applyFilter.bind(this);
+  }
 
-  function applyFilter(evt) {
+  Reviews.prototype.init = function() {
+    this.hide(this.reviewsFilter);
+    this.loadPage();
+    this.show(this.moreReviewsBtn);
+
+    this.moreReviewsBtn.addEventListener('click', this.showMoreReviews);
+    this.reviewsFilter.addEventListener('change', this.applyFilter, true);
+  };
+
+  Reviews.prototype.applyFilter = function(evt) {
     var target = evt.target;
     if (target.type !== 'radio') {
       return;
     }
-    reviewsList.innerHTML = '';
-    instancesOfReview.forEach(function(review) {
+    this.reviewsList.innerHTML = '';
+    this.instancesOfReview.forEach(function(review) {
       review.remove();
     });
-    instancesOfReview = [];
+    this.instancesOfReview = [];
 
-    filterID = target.id;
-    localStorage.setItem('filterID', filterID);
-    pageNumber = -1;
-    loadPage();
-    show(moreReviewsBtn);
-  }
+    this.filterID = target.id;
+    localStorage.setItem('filterID', this.filterID);
 
-  function showMoreReviews() {
-    loadPage(renderReviews);
-  }
+    this.pageNumber = -1;
+    this.loadPage();
+    this.show(this.moreReviewsBtn);
+  };
 
-  function loadPage(renderFunction) {
+  Reviews.prototype.showMoreReviews = function() {
+    this.loadPage(this.renderReviews);
+  };
+
+  Reviews.prototype.loadPage = function(renderFunction) {
     var REVIEWS_LOAD_URL = '/api/reviews';
-    var fromItem = ++pageNumber * pageSize;
-    var toItem = fromItem + pageSize;
+    var fromItem = ++this.pageNumber * this.pageSize;
+    var toItem = fromItem + this.pageSize;
 
-    var callback = renderFunction || showReviews;
+    var callback = renderFunction || this.showReviews;
+    callback = callback.bind(this);
 
     load(REVIEWS_LOAD_URL, {
       from: fromItem,
       to: toItem,
-      filter: filterID
+      filter: this.filterID
     }, callback);
-  }
+  };
 
-  function showReviews(data) {
-    renderReviews(data);
-    show(reviewsFilter);
+  Reviews.prototype.showReviews = function(data) {
+    this.renderReviews(data);
+    this.show(this.reviewsFilter);
 
-    document.getElementById(filterID).checked = true;
-  }
+    document.getElementById(this.filterID).checked = true;
+  };
 
-  function renderReviews(reviews) {
-    if (reviews.length < pageSize) {
-      hide(moreReviewsBtn);
+  Reviews.prototype.renderReviews = function(reviews) {
+    if (reviews.length < this.pageSize) {
+      this.hide(this.moreReviewsBtn);
     }
 
     reviews.forEach(function(item) {
-      var review = new Review(item, templateReviewElement.cloneNode(true));
-      instancesOfReview.push(review);
-      reviewsList.appendChild(review.element);
-    });
-  }
+      var review = new Review(item, this.templateReviewElement.cloneNode(true));
 
-  function show(element) {
+      this.instancesOfReview.push(review);
+      this.reviewsList.appendChild(review.element);
+    }, this);
+  };
+
+  Reviews.prototype.show = function(element) {
     element.classList.remove('invisible');
-  }
+  };
 
-  function hide(element) {
+  Reviews.prototype.hide = function(element) {
     element.classList.add('invisible');
-  }
+  };
+
+  return Reviews;
 });
 
