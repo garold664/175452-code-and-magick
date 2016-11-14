@@ -1,7 +1,10 @@
 'use strict';
 
 
-define(['./form', './game', './gallery.js', './reviews'], function(form, Game, Gallery) {
+define(['./form', './game', './gallery', './reviews'], function(form, Game, Gallery, Reviews) {
+  var reviews = new Reviews();
+  reviews.init();
+
   var game = new Game(document.querySelector('.demo'));
   game.initializeLevelAndStart();
   game.setGameStatus(Game.Verdict.INTRO);
