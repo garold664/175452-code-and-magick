@@ -34,7 +34,7 @@ define(function() {
     this.setActivePicture(index);
   };
 
-  Gallery.prototype.show = function(currentNumber) {
+  Gallery.prototype.render = function(currentNumber) {
     this.overlay.classList.remove('invisible');
     this.picturesQuantity.innerText = this.pictures.length;
 
@@ -49,7 +49,7 @@ define(function() {
     this.setActivePicture(currentNumber);
   };
 
-  Gallery.prototype.hide = function() {
+  Gallery.prototype.remove = function() {
     this.overlay.classList.add('invisible');
 
     this.buttonClose.removeEventListener('click', this.hide);
