@@ -1,6 +1,10 @@
 'use strict';
 
-define(function() {
+define(['./inherit', './base-component'], function(inherit, BaseComponent) {
+
+  inherit(Gallery, BaseComponent);
+  console.dir(Gallery.prototype);
+
   function Gallery(pictures) {
     this.pictures = pictures;
     this.overlay = document.querySelector('.overlay-gallery');
@@ -35,22 +39,25 @@ define(function() {
   };
 
   Gallery.prototype.render = function(currentNumber) {
-    this.overlay.classList.remove('invisible');
+    this.show.call(this, this.overlay);
     this.picturesQuantity.innerText = this.pictures.length;
 
-    this.hide = this.hide.bind(this);
-    this.showPrevious = this.showPrevious.bind(this);
-    this.showNext = this.showNext.bind(this);
+    // this.remove = this.remove.bind(this);
+    // this.showPrevious = this.showPrevious.bind(this);
+    // this.showNext = this.showNext.bind(this);
+    this.addHandler.call(this, this.buttonClose, 'click', this.remove);
+    this.addHandler.call(this, this.buttonPrevious, 'click', this.showPrevious);
+    this.addHandler.call(this, this.buttonNext, 'click', this.showNext);
 
-    this.buttonClose.addEventListener('click', this.hide);
-    this.buttonPrevious.addEventListener('click', this.showPrevious);
-    this.buttonNext.addEventListener('click', this.showNext);
+    // this.buttonClose.addEventListener('click', this.remove);
+    // this.buttonPrevious.addEventListener('click', this.showPrevious);
+    // this.buttonNext.addEventListener('click', this.showNext);
 
     this.setActivePicture(currentNumber);
   };
 
   Gallery.prototype.remove = function() {
-    this.overlay.classList.add('invisible');
+    this.hide.call(this, this.overlay);
 
     this.buttonClose.removeEventListener('click', this.hide);
     this.buttonPrevious.removeEventListener('click', this.showPrevious);

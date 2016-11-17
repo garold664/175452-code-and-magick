@@ -4,29 +4,30 @@ define(function() {
 
   function BaseComponent(element) {
     this.element = element;
-  };
+  }
 
-
-  BaseComponent.prototype.addHandler = function (element, event, handler) {
+  BaseComponent.prototype.addHandler = function(element, event, handler) {
+    console.log(this);
+    console.log(element);
     handler = handler.bind(this);
     element.addEventListener(event, handler);
-  }
+  };
 
-  BaseComponent.prototype.show = function (element) {
+  BaseComponent.prototype.show = function(element) {
     element.classList.remove('invisible');
-  }
+  };
 
-  BaseComponent.prototype.hide = function (element) {
+  BaseComponent.prototype.hide = function(element) {
     element.classList.add('invisible');
-  }
+  };
 
-  BaseComponent.prototype.render = function () {
+  BaseComponent.prototype.render = function() {
 
-  }
+  };
 
-  BaseComponent.prototype.remove = function () {
+  BaseComponent.prototype.remove = function() {
 
-  }
+  };
 
   return BaseComponent;
 });

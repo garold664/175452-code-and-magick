@@ -44,7 +44,7 @@ define(['./form', './game', './gallery', './reviews'], function(form, Game, Gall
     if (index === -1) {
       return;
     }
-    gallery.show(index + 1);
+    gallery.render(index + 1);
   }
 
   function retrieveSrcs(elements) {

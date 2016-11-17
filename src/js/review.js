@@ -1,6 +1,9 @@
 'use strict';
 
-define(function() {
+define(['./inherit', './base-component'], function(inherit, BaseComponent) {
+
+  inherit(Review, BaseComponent);
+
   function Review(review, templateReview) {
     this.data = review;
     this.IMAGE_SIZE = 124;
@@ -21,9 +24,13 @@ define(function() {
     this.loadHandler = this.loadHandler.bind(this);
     this.errorHandler = this.errorHandler.bind(this);
 
-    this.quiz.addEventListener('click', this.quizHandler);
-    this.image.addEventListener('load', this.loadHandler);
-    this.image.addEventListener('error', this.errorHandler);
+    // this.quiz.addEventListener('click', this.quizHandler);
+    // this.image.addEventListener('load', this.loadHandler);
+    // this.image.addEventListener('error', this.errorHandler);
+
+    this.addHandler.call(this, this.quiz, 'click', this.quizHandler);
+    this.addHandler.call(this, this.image, 'load', this.loadHandler);
+    this.addHandler.call(this, this.image, 'error', this.errorHandler);
   }
 
   Review.prototype.loadHandler = function() {
