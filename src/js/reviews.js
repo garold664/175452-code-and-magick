@@ -3,7 +3,6 @@
 define(['./inherit', './base-component', './review', './load'], function(inherit, BaseComponent, Review, load) {
 
   inherit(Reviews, BaseComponent);
-  console.dir(Reviews.prototype);
 
   function Reviews() {
     var template = document.querySelector('#review-template');
@@ -17,25 +16,17 @@ define(['./inherit', './base-component', './review', './load'], function(inherit
     this.pageNumber = -1;
     this.pageSize = 3;
     this.instancesOfReview = [];
-
-    // this.showMoreReviews = this.showMoreReviews.bind(this);
-    // this.applyFilter = this.applyFilter.bind(this);
   }
 
   Reviews.prototype.init = function() {
     this.filterID = localStorage.getItem('filterID') || 'reviews-all';
 
-    // this.hide(this.reviewsFilter);
     this.hide.call(this, this.reviewsFilter);
     this.loadPage();
     this.show.call(this, this.moreReviewsBtn);
-    // this.show(this.moreReviewsBtn);
 
     this.addHandler.call(this, this.moreReviewsBtn, 'click', this.showMoreReviews);
     this.addHandler.call(this, this.reviewsFilter, 'change', this.applyFilter);
-
-    // this.moreReviewsBtn.addEventListener('click', this.showMoreReviews);
-    // this.reviewsFilter.addEventListener('change', this.applyFilter, true);
   };
 
   Reviews.prototype.applyFilter = function(evt) {
@@ -59,7 +50,7 @@ define(['./inherit', './base-component', './review', './load'], function(inherit
   };
 
   Reviews.prototype.showMoreReviews = function() {
-    this.loadPage(this.renderReviews);
+    this.loadPage(this.render);
   };
 
   Reviews.prototype.loadPage = function(renderFunction) {
@@ -78,13 +69,13 @@ define(['./inherit', './base-component', './review', './load'], function(inherit
   };
 
   Reviews.prototype.showReviews = function(data) {
-    this.renderReviews(data);
+    this.render(data);
     this.show(this.reviewsFilter);
 
     document.getElementById(this.filterID).checked = true;
   };
 
-  Reviews.prototype.renderReviews = function(reviews) {
+  Reviews.prototype.render = function(reviews) {
     if (reviews.length < this.pageSize) {
       this.hide(this.moreReviewsBtn);
     }
@@ -96,14 +87,6 @@ define(['./inherit', './base-component', './review', './load'], function(inherit
       this.reviewsList.appendChild(review.element);
     }, this);
   };
-
-  // Reviews.prototype.show = function(element) {
-  //   element.classList.remove('invisible');
-  // };
-
-  // Reviews.prototype.hide = function(element) {
-  //   element.classList.add('invisible');
-  // };
 
   return Reviews;
 });

@@ -7,8 +7,6 @@ define(function() {
   }
 
   BaseComponent.prototype.addHandler = function(element, event, handler) {
-    console.log(this);
-    console.log(element);
     handler = handler.bind(this);
     element.addEventListener(event, handler);
   };
