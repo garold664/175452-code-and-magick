@@ -2,14 +2,7 @@
 
 define(function() {
 
-  function BaseComponent(element) {
-    this.element = element;
-  }
-
-  BaseComponent.prototype.addHandler = function(element, event, handler) {
-    handler = handler.bind(this);
-    element.addEventListener(event, handler);
-  };
+  function BaseComponent() {}
 
   BaseComponent.prototype.show = function(element) {
     element.classList.remove('invisible');

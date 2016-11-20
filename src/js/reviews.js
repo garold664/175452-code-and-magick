@@ -25,8 +25,11 @@ define(['./inherit', './base-component', './review', './load'], function(inherit
     this.loadPage();
     this.show(this.moreReviewsBtn);
 
-    this.addHandler.call(this, this.moreReviewsBtn, 'click', this.showMoreReviews);
-    this.addHandler.call(this, this.reviewsFilter, 'change', this.applyFilter);
+    this.showMoreReviews = this.showMoreReviews.bind(this);
+    this.applyFilter = this.applyFilter.bind(this);
+
+    this.moreReviewsBtn.addEventListener('click', this.showMoreReviews);
+    this.reviewsFilter.addEventListener('change', this.applyFilter, true);
   };
 
   Reviews.prototype.applyFilter = function(evt) {

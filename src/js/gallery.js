@@ -40,9 +40,13 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
     this.show(this.overlay);
     this.picturesQuantity.innerText = this.pictures.length;
 
-    this.addHandler.call(this, this.buttonClose, 'click', this.remove);
-    this.addHandler.call(this, this.buttonPrevious, 'click', this.showPrevious);
-    this.addHandler.call(this, this.buttonNext, 'click', this.showNext);
+    this.hide = this.hide.bind(this);
+    this.showPrevious = this.showPrevious.bind(this);
+    this.showNext = this.showNext.bind(this);
+
+    this.buttonClose.addEventListener('click', this.hide);
+    this.buttonPrevious.addEventListener('click', this.showPrevious);
+    this.buttonNext.addEventListener('click', this.showNext);
 
     this.setActivePicture(currentNumber);
   };
