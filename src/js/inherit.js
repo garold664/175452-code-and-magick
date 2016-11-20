@@ -2,10 +2,8 @@
 
 define(function() {
   function inherit(child, parent) {
-    function EmptyConstructor() {}
-    EmptyConstructor.prototype = parent.prototype;
-
-    child.prototype = new EmptyConstructor();
+    child.prototype = Object.create(parent.prototype);
+    child.prototype.constructor = child;
   }
 
   return inherit;

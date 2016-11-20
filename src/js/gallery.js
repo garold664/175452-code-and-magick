@@ -37,7 +37,7 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
   };
 
   Gallery.prototype.render = function(currentNumber) {
-    this.show.call(this, this.overlay);
+    this.show(this.overlay);
     this.picturesQuantity.innerText = this.pictures.length;
 
     this.addHandler.call(this, this.buttonClose, 'click', this.remove);
@@ -48,7 +48,7 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
   };
 
   Gallery.prototype.remove = function() {
-    this.hide.call(this, this.overlay);
+    this.hide(this.overlay);
 
     this.buttonClose.removeEventListener('click', this.hide);
     this.buttonPrevious.removeEventListener('click', this.showPrevious);

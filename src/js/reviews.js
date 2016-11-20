@@ -21,9 +21,9 @@ define(['./inherit', './base-component', './review', './load'], function(inherit
   Reviews.prototype.init = function() {
     this.filterID = localStorage.getItem('filterID') || 'reviews-all';
 
-    this.hide.call(this, this.reviewsFilter);
+    this.hide(this.reviewsFilter);
     this.loadPage();
-    this.show.call(this, this.moreReviewsBtn);
+    this.show(this.moreReviewsBtn);
 
     this.addHandler.call(this, this.moreReviewsBtn, 'click', this.showMoreReviews);
     this.addHandler.call(this, this.reviewsFilter, 'change', this.applyFilter);
