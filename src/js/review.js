@@ -1,6 +1,9 @@
 'use strict';
 
-define(function() {
+define(['./inherit', './base-component'], function(inherit, BaseComponent) {
+
+  inherit(Review, BaseComponent);
+
   function Review(review, templateReview) {
     this.data = review;
     this.IMAGE_SIZE = 124;

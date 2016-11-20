@@ -1,6 +1,8 @@
 'use strict';
 
-define(['./review', './load'], function(Review, load) {
+define(['./inherit', './base-component', './review', './load'], function(inherit, BaseComponent, Review, load) {
+
+  inherit(Reviews, BaseComponent);
 
   function Reviews() {
     var template = document.querySelector('#review-template');
@@ -14,9 +16,6 @@ define(['./review', './load'], function(Review, load) {
     this.pageNumber = -1;
     this.pageSize = 3;
     this.instancesOfReview = [];
-
-    this.showMoreReviews = this.showMoreReviews.bind(this);
-    this.applyFilter = this.applyFilter.bind(this);
   }
 
   Reviews.prototype.init = function() {
@@ -25,6 +24,9 @@ define(['./review', './load'], function(Review, load) {
     this.hide(this.reviewsFilter);
     this.loadPage();
     this.show(this.moreReviewsBtn);
+
+    this.showMoreReviews = this.showMoreReviews.bind(this);
+    this.applyFilter = this.applyFilter.bind(this);
 
     this.moreReviewsBtn.addEventListener('click', this.showMoreReviews);
     this.reviewsFilter.addEventListener('change', this.applyFilter, true);
@@ -51,7 +53,7 @@ define(['./review', './load'], function(Review, load) {
   };
 
   Reviews.prototype.showMoreReviews = function() {
-    this.loadPage(this.renderReviews);
+    this.loadPage(this.render);
   };
 
   Reviews.prototype.loadPage = function(renderFunction) {
@@ -70,13 +72,13 @@ define(['./review', './load'], function(Review, load) {
   };
 
   Reviews.prototype.showReviews = function(data) {
-    this.renderReviews(data);
+    this.render(data);
     this.show(this.reviewsFilter);
 
     document.getElementById(this.filterID).checked = true;
   };
 
-  Reviews.prototype.renderReviews = function(reviews) {
+  Reviews.prototype.render = function(reviews) {
     if (reviews.length < this.pageSize) {
       this.hide(this.moreReviewsBtn);
     }
@@ -87,14 +89,6 @@ define(['./review', './load'], function(Review, load) {
       this.instancesOfReview.push(review);
       this.reviewsList.appendChild(review.element);
     }, this);
-  };
-
-  Reviews.prototype.show = function(element) {
-    element.classList.remove('invisible');
-  };
-
-  Reviews.prototype.hide = function(element) {
-    element.classList.add('invisible');
   };
 
   return Reviews;

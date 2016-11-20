@@ -1,6 +1,9 @@
 'use strict';
 
-define(function() {
+define(['./inherit', './base-component'], function(inherit, BaseComponent) {
+
+  inherit(Gallery, BaseComponent);
+
   function Gallery(pictures) {
     this.pictures = pictures;
     this.overlay = document.querySelector('.overlay-gallery');
@@ -21,7 +24,6 @@ define(function() {
     this.preview.removeChild(this.preview.lastChild);
     this.preview.appendChild(img);
     this.currentPictureNumber.innerText = currentNumber;
-
   };
 
   Gallery.prototype.showPrevious = function() {
@@ -34,8 +36,8 @@ define(function() {
     this.setActivePicture(index);
   };
 
-  Gallery.prototype.show = function(currentNumber) {
-    this.overlay.classList.remove('invisible');
+  Gallery.prototype.render = function(currentNumber) {
+    this.show(this.overlay);
     this.picturesQuantity.innerText = this.pictures.length;
 
     this.hide = this.hide.bind(this);
@@ -49,8 +51,8 @@ define(function() {
     this.setActivePicture(currentNumber);
   };
 
-  Gallery.prototype.hide = function() {
-    this.overlay.classList.add('invisible');
+  Gallery.prototype.remove = function() {
+    this.hide(this.overlay);
 
     this.buttonClose.removeEventListener('click', this.hide);
     this.buttonPrevious.removeEventListener('click', this.showPrevious);
