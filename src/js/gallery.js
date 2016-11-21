@@ -40,11 +40,11 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
     this.show(this.overlay);
     this.picturesQuantity.innerText = this.pictures.length;
 
-    this.hide = this.hide.bind(this);
+    this.remove = this.remove.bind(this);
     this.showPrevious = this.showPrevious.bind(this);
     this.showNext = this.showNext.bind(this);
 
-    this.buttonClose.addEventListener('click', this.hide);
+    this.buttonClose.addEventListener('click', this.remove);
     this.buttonPrevious.addEventListener('click', this.showPrevious);
     this.buttonNext.addEventListener('click', this.showNext);
 
@@ -54,7 +54,7 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
   Gallery.prototype.remove = function() {
     this.hide(this.overlay);
 
-    this.buttonClose.removeEventListener('click', this.hide);
+    this.buttonClose.removeEventListener('click', this.remove);
     this.buttonPrevious.removeEventListener('click', this.showPrevious);
     this.buttonNext.removeEventListener('click', this.showNext);
   };
