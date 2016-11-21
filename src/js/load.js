@@ -1,6 +1,6 @@
 'use strict';
 
-define(function() {
+define(['./review-data.js'], function(ReviewData) {
   var getSearchString = function(params) {
     return Object.keys(params).map(function(param) {
       return [param, params[param]].join('=');
@@ -12,6 +12,9 @@ define(function() {
 
     xhr.onload = function(evt) {
       var loadedData = JSON.parse(evt.target.response);
+      loadedData = loadedData.map(function(review) {
+        return new ReviewData(review);
+      });
       callback(loadedData);
     };
 
