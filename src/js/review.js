@@ -1,6 +1,6 @@
 'use strict';
 
-define(['./inherit', './base-component'], function(inherit, BaseComponent) {
+define(['./inherit', './base-component', './review-data.js'], function(inherit, BaseComponent) {
 
   inherit(Review, BaseComponent);
 
@@ -13,10 +13,10 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
     this.text = this.element.querySelector('.review-text');
     this.image = new Image();
 
-    this.image.src = this.data.author.picture;
-    this.author.title = this.data.author.name;
-    this.rating.textContent = this.data.rating;
-    this.text.textContent = this.data.description;
+    this.image.src = this.data.getAuthorPicture();
+    this.author.title = this.data.getAuthorName();
+    this.rating.textContent = this.data.getRating();
+    this.text.textContent = this.data.getDescription();
 
     this.quiz = this.element.querySelector('.review-quiz');
 
