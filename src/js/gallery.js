@@ -15,6 +15,17 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
     this.buttonClose = this.overlay.querySelector('.overlay-gallery-close');
   }
 
+  Gallery.prototype.onHashChange = function() {
+    var hash = String.prototype.match.call(location.hash, /#photo\/(\S+)/);
+    if (hash !== null) {
+      console.log(hash[1]);
+      console.log(location.origin.length);
+      this.render(hash[1]);
+    } else {
+      this.remove();
+    }
+  };
+
   Gallery.prototype.setActivePicture = function(currentNumber) {
     this.activePicture = currentNumber;
 
