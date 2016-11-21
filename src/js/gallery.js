@@ -13,6 +13,11 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
     this.currentPictureNumber = this.overlay.querySelector('.preview-number-current');
     this.picturesQuantity = this.overlay.querySelector('.preview-number-total');
     this.buttonClose = this.overlay.querySelector('.overlay-gallery-close');
+
+    this.onHashChange = this.onHashChange.bind(this);
+
+    window.addEventListener('hashchange', this.onHashChange);
+    window.addEventListener('load', this.onHashChange);
   }
 
   Gallery.prototype.onHashChange = function() {
@@ -26,27 +31,68 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
     }
   };
 
-  Gallery.prototype.setActivePicture = function(currentNumber) {
-    this.activePicture = currentNumber;
-
+  Gallery.prototype.setActivePicture = function(currentPicture) {
     var img = new Image();
-    img.src = this.pictures[currentNumber - 1];
+    var index;
+    if (typeof currentPicture !== 'number') {
+      img.src = currentPicture;
 
+      var pic = document.querySelector('img[src="' + currentPicture + '"]');
+      var currentElement = pic.parentNode;
+      var elements = document.querySelectorAll('.photogallery-image');
+      elements = Array.prototype.slice.call(elements);
+      index = elements.indexOf(currentElement);
+      if (index === -1) {
+        return;
+      }
+      ++index;
+
+    } else {
+      img.src = this.pictures[currentPicture - 1];
+      index = currentPicture;
+    }
+
+    this.activePicture = currentPicture;
     this.preview.removeChild(this.preview.lastChild);
     this.preview.appendChild(img);
-    this.currentPictureNumber.innerText = currentNumber;
+    this.currentPictureNumber.innerText = index;
   };
 
   Gallery.prototype.showPrevious = function() {
-    var index = (this.activePicture > 1) ? this.activePicture - 1 : this.pictures.length;
-    this.setActivePicture(index);
+    if (typeof this.activePicture !== 'number') {
+      var currentPic = document.querySelector('img[src="' + this.activePicture + '"]');
+      console.log(currentPic);
+      var parent = currentPic.parentNode;
+      console.log(parent);
+      var prevParent = parent.previousElementSibling;
+      prevParent = ((prevParent) && (prevParent.tagName === 'A')) ? prevParent : this.lastParent;
+      var prevPic = prevParent.firstElementChild;
+      console.log(prevParent);
+      console.log(prevPic);
+      location.hash = 'photo/' + prevPic.src.substr(location.origin.length + 1);
+    } else {
+      var index = (this.activePicture > 1) ? this.activePicture - 1 : this.pictures.length;
+      this.setActivePicture(index);
+    }
   };
 
   Gallery.prototype.showNext = function() {
-    var index = (this.activePicture < this.pictures.length) ? this.activePicture + 1 : 1;
-    this.setActivePicture(index);
-  };
+    if (typeof this.activePicture !== 'number') {
+      var currentPic = document.querySelector('img[src="' + this.activePicture + '"]');
+      console.log(currentPic);
+      var parent = currentPic.parentNode;
+      console.log(parent);
 
+      var nextParent = parent.nextElementSibling;
+      nextParent = ((nextParent) && (nextParent.tagName === 'A')) ? nextParent : this.firstParent;
+      var nextPic = nextParent.firstElementChild;
+      console.log(nextPic);
+      location.hash = 'photo/' + nextPic.src.substr(location.origin.length + 1);
+    } else {
+      var index = (this.activePicture < this.pictures.length) ? this.activePicture + 1 : 1;
+      this.setActivePicture(index);
+    }
+  };
   Gallery.prototype.render = function(currentNumber) {
     this.show(this.overlay);
     this.picturesQuantity.innerText = this.pictures.length;
