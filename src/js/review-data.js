@@ -21,5 +21,9 @@ define(function() {
     return this.data.description;
   };
 
+  ReviewData.prototype.setReviewUsefulness = function(number) {
+    this.data.review_usefulness = number;
+  };
+
   return ReviewData;
 });
