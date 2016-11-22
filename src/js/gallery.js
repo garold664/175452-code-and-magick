@@ -25,69 +25,53 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
     window.addEventListener('load', this.onHashChange);
   }
 
+  Gallery.prototype.setHash = function(imgIndex) {
+    var src = this.pictures[imgIndex - 1].substr(location.origin.length + 1);
+    location.hash = 'photo/' + src;
+  };
+
   Gallery.prototype.onHashChange = function() {
     var hash = String.prototype.match.call(location.hash, /#photo\/(\S+)/);
 
-    (hash !== null) ? this.render(hash[1]) : this.remove();
+    if (hash !== null) {
+      var src = location.origin + '/' + hash[1];
+      var index = this.pictures.indexOf(src) + 1;
+      this.render(index);
+
+      return;
+    }
+
+    this.remove();
   };
 
   Gallery.prototype.setActivePicture = function(currentPicture) {
     var img = new Image();
-    var index;
-    if (typeof currentPicture === 'string') {
-      img.src = currentPicture;
 
-      var pic = document.querySelector('img[src="' + currentPicture + '"]');
-      var currentElement = pic.parentNode;
-      var elements = document.querySelectorAll('.photogallery-image');
-      elements = Array.prototype.slice.call(elements);
-      index = elements.indexOf(currentElement);
-      if (index === -1) {
-        return;
-      }
-      ++index;
-
-    } else {
-      img.src = this.pictures[currentPicture - 1];
-      index = currentPicture;
-    }
+    img.src = this.pictures[currentPicture - 1];
 
     this.activePicture = currentPicture;
     this.preview.removeChild(this.preview.lastChild);
     this.preview.appendChild(img);
-    this.currentPictureNumber.innerText = index;
+    this.currentPictureNumber.innerText = currentPicture;
   };
 
   Gallery.prototype.showPrevious = function() {
-    if (typeof this.activePicture !== 'number') {
-      var currentPic = document.querySelector('img[src="' + this.activePicture + '"]');
-      var parent = currentPic.parentNode;
-      var prevParent = parent.previousElementSibling;
-
-      prevParent = ((prevParent) && (prevParent.tagName === 'A')) ? prevParent : this.lastParent;
-      var prevPic = prevParent.firstElementChild;
-
-      location.hash = 'photo/' + prevPic.src.substr(location.origin.length + 1);
-    } else {
-      var index = (this.activePicture > 1) ? this.activePicture - 1 : this.pictures.length;
-      this.setActivePicture(index);
+    var index = (this.activePicture > 1) ? this.activePicture - 1 : this.pictures.length;
+    if (location.hash !== 'undefined') {
+      this.setHash(index);
+      return;
     }
+    this.setActivePicture(index);
   };
 
   Gallery.prototype.showNext = function() {
-    if (typeof this.activePicture !== 'number') {
-      var currentPic = document.querySelector('img[src="' + this.activePicture + '"]');
-      var parent = currentPic.parentNode;
-      var nextParent = parent.nextElementSibling;
+    var index = (this.activePicture < this.pictures.length) ? this.activePicture + 1 : 1;
 
-      nextParent = ((nextParent) && (nextParent.tagName === 'A')) ? nextParent : this.firstParent;
-      var nextPic = nextParent.firstElementChild;
-
-      location.hash = 'photo/' + nextPic.src.substr(location.origin.length + 1);
-    } else {
-      var index = (this.activePicture < this.pictures.length) ? this.activePicture + 1 : 1;
-      this.setActivePicture(index);
+    if (location.hash !== 'undefined') {
+      this.setHash(index);
+      return;
     }
+    this.setActivePicture(index);
   };
   Gallery.prototype.render = function(currentNumber) {
     this.show(this.overlay);

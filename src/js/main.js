@@ -34,7 +34,6 @@ define(['./form', './game', './gallery', './reviews'], function(form, Game, Gall
 
   function initGallery(evt) {
     var target = evt.target;
-
     if (location.hash !== 'undefined') {
       if (target.nodeName !== 'IMG') {
         return;
