@@ -34,17 +34,23 @@ define(['./form', './game', './gallery', './reviews'], function(form, Game, Gall
 
   function initGallery(evt) {
     var target = evt.target;
-    if (target.nodeName !== 'IMG') {
-      return;
+    if (location.hash !== 'undefined') {
+      if (target.nodeName !== 'IMG') {
+        return;
+      }
+
+      var src = (target.src.substr(location.origin.length + 1));
+      location.hash = 'photo/' + src;
+    } else {
+      var currentElement = target.parentNode;
+      var elements = document.querySelectorAll('.photogallery-image');
+      elements = Array.prototype.slice.call(elements);
+      var index = elements.indexOf(currentElement);
+      if (index === -1) {
+        return;
+      }
+      gallery.render(index + 1);
     }
-    var currentElement = target.parentNode;
-    var elements = document.querySelectorAll('.photogallery-image');
-    elements = Array.prototype.slice.call(elements);
-    var index = elements.indexOf(currentElement);
-    if (index === -1) {
-      return;
-    }
-    gallery.render(index + 1);
   }
 
   function retrieveSrcs(elements) {
