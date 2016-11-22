@@ -19,7 +19,6 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
     this.lastParent = this.photoContainer.querySelector('a:last-of-type');
     this.firstParent = this.photoContainer.querySelector('a:first-of-type');
 
-    this.render = this.render.bind(this);
     this.onHashChange = this.onHashChange.bind(this);
 
     window.addEventListener('hashchange', this.onHashChange);
@@ -38,7 +37,7 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
   Gallery.prototype.setActivePicture = function(currentPicture) {
     var img = new Image();
     var index;
-    if (typeof currentPicture !== 'number') {
+    if (typeof currentPicture === 'string') {
       img.src = currentPicture;
 
       var pic = document.querySelector('img[src="' + currentPicture + '"]');
