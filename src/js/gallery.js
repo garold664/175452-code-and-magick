@@ -27,11 +27,8 @@ define(['./inherit', './base-component'], function(inherit, BaseComponent) {
 
   Gallery.prototype.onHashChange = function() {
     var hash = String.prototype.match.call(location.hash, /#photo\/(\S+)/);
-    if (hash !== null) {
-      this.render(hash[1]);
-    } else {
-      this.remove();
-    }
+
+    (hash !== null) ? this.render(hash[1]) : this.remove();
   };
 
   Gallery.prototype.setActivePicture = function(currentPicture) {
